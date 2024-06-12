@@ -34,12 +34,12 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'swissgeo.apps.SwissgeoConfig', 
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'leaflet',
+    'ski_resort_grp1',  # Ensure your app is included here
 ]
 
 MIDDLEWARE = [
@@ -106,11 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LEAFLET_CONFIG ={    
-    'MIN_ZOOM':3,    
-    'MAX_ZOOM':15,    
-    'DEFAULT_ZOOM':7,    
-    'DEFAULT_CENTER': (46.7,8), 
+LEAFLET_CONFIG = {
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 15,
+    'DEFAULT_ZOOM': 7,
+    'DEFAULT_CENTER': (46.7, 8),
 }
 
 
