@@ -107,11 +107,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LEAFLET_CONFIG = {
-    'MIN_ZOOM': 3,
-    'MAX_ZOOM': 15,
-    'DEFAULT_ZOOM': 7,
-    'DEFAULT_CENTER': (46.7, 8),
+    'DEFAULT_CENTER': (46.31415226088029, 7.402238579358967),
+    'DEFAULT_ZOOM': 13,
+    'MIN_ZOOM': 9,
+    'MAX_ZOOM': 19,
+    'TILES': [
+        ('OpenStreetMap', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {'attribution': 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}),
+        ('OpenSnowMap', 'https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png', {'attribution': 'Map data: &copy; <a href="https://www.opensnowmap.org/iframes/data.html">www.opensnowmap.org</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'})
+    ],
 }
+
 
 
 # Internationalization

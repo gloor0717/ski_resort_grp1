@@ -1,0 +1,12 @@
+{% extends 'ski_resort_grp1/base.html' %}
+
+{% block title %}Restaurants - Ski Resort Dashboard{% endblock %}
+
+{% block content %}
+    <h2 class="my-4">Restaurants</h2>
+    <ul class="list-group">
+        {% for restaurant in restaurants %}
+        <li class="list-group-item">{{ restaurant.name }} - <a href="{{ restaurant.website }}" target="_blank">Website</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
