@@ -3,10 +3,16 @@
 {% block title %}Ski Routes - Ski Resort Dashboard{% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
     <h2 class="my-4">Ski Routes</h2>
     <ul class="list-group">
         {% for route in ski_routes %}
         <li class="list-group-item">{{ route.name }} - {{ route.difficulty }}</li>
         {% endfor %}
     </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

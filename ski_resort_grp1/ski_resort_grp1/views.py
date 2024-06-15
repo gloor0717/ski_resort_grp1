@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.serializers import serialize
+import json
+from urllib.request import urlopen, Request
+from urllib.parse import quote_plus
+from urllib.error import HTTPError
 from .models import SkiRoute, SkiLift, Restaurant, BusStation
 
 def index(request):
@@ -46,4 +50,24 @@ def bus_stations_geojson(request):
     return HttpResponse(ser, content_type='application/json')
 
 def weather(request):
-    return render(request, 'ski_resort_grp1/weather.html')
+    api_key = 'eda0603a64034145873152333241506'
+    city = 'Ayent'
+    city_encoded = quote_plus(city)
+    weather_url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={city_encoded}&days=7&aqi=no&alerts=no'
+    
+    try:
+        req = Request(weather_url)
+        with urlopen(req) as response:
+            response_data = response.read()
+            encoding = response.info().get_content_charset('utf-8')
+            weather_data = json.loads(response_data.decode(encoding))
+    except HTTPError as e:
+        error_message = e.read().decode()
+        return HttpResponse(f"HTTP error: {e.code}. Response: {error_message}", status=e.code)
+    except Exception as e:
+        return HttpResponse(f"An error occurred: {e}", status=500)
+    
+    context = {
+        'weather_data': weather_data
+    }
+    return render(request, 'ski_resort_grp1/weather.html', context)

@@ -3,7 +3,43 @@
 {% block title %}Weather - Ski Resort Dashboard{% endblock %}
 
 {% block content %}
-    <h2 class="my-4">Weather in Anzère</h2>
-    <!-- Add your weather display logic here -->
-    <p>Current weather conditions will be displayed here.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="my-4">Weather in Anzère</h2>
+            <div id="weather-widget">
+                {% if weather_data %}
+                <h3>Current Weather</h3>
+                <p><strong>{{ weather_data.current.condition.text }}</strong></p>
+                <p>Temperature: {{ weather_data.current.temp_c }}°C</p>
+                <p>Humidity: {{ weather_data.current.humidity }}%</p>
+                <p>Wind Speed: {{ weather_data.current.wind_kph }} kph</p>
+                
+                <h3 class="mt-4">Weekly Forecast</h3>
+                <div class="row">
+                    {% for day in weather_data.forecast.forecastday %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ day.date }}</h5>
+                                <p class="card-text">
+                                    <strong>{{ day.day.condition.text }}</strong><br>
+                                    Temp: {{ day.day.avgtemp_c }}°C<br>
+                                    Max Temp: {{ day.day.maxtemp_c }}°C<br>
+                                    Min Temp: {{ day.day.mintemp_c }}°C<br>
+                                    Humidity: {{ day.day.avghumidity }}%<br>
+                                    Wind Speed: {{ day.day.maxwind_kph }} kph
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>Unable to fetch weather data at the moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

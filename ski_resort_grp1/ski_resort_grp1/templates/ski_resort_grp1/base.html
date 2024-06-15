@@ -8,40 +8,59 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     {% block extra_head %}{% endblock %}
 </head>
+<style>
+    .nav-item a {
+        color: #343A40;
+    }
+
+    .nav-item a:hover {
+        color: #FFFFFF;
+    }
+
+    .nav-item:hover {
+        background-color: #343A40;
+    }
+</style>
 <body>
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <a class="navbar-brand" href="{% url 'index' %}">Anzère Ski Resort</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+        <a class="navbar-brand text-white" href="{% url 'index' %}">Anzère Ski Resort</a>
     </nav>
 
     <div class="container-fluid">
         <div class="row">
             <!-- Side Panel -->
-            <nav id="sidebar" class="col-md-2 d-none d-md-block bg-light sidebar">
+            <nav id="sidebar" class="col-md-2 d-none d-md-block bg-white border-right sidebar px-0" style="height: calc(100vh - 113px);">
                 <div class="sidebar-sticky">
-                    <h5>Side Panel</h5>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'index' %}">Dashboard</a>
+                            <a class="nav-link text-center p-0 py-2" href="{% url 'index' %}">Dashboard</a>
                         </li>
+                        <hr class="border w-100 my-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'map' %}">Map</a>
+                            <a class="nav-link text-center p-0 py-2" href="{% url 'map' %}">Map</a>
                         </li>
+                        <hr class="border w-100 my-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'ski_routes' %}">Ski Routes</a>
+                            <a class="nav-link text-center p-0 py-2" href="{% url 'ski_routes' %}">Ski Routes</a>
                         </li>
+                        <hr class="border w-100 my-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'ski_lifts' %}">Ski Lifts</a>
+                            <a class="nav-link text-center p-0 py-2" href="{% url 'ski_lifts' %}">Ski Lifts</a>
                         </li>
+                        <hr class="border w-100 my-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'restaurants' %}">Restaurants</a>
+                            <a class="nav-link text-center p-0 py-2" href="{% url 'restaurants' %}">Restaurants</a>
                         </li>
+                        <hr class="border w-100 my-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'bus_stations' %}">Bus Stations</a>
+                            <a class="nav-link text-center p-0 py-2" href="{% url 'bus_stations' %}">Bus Stations</a>
                         </li>
+                        <hr class="border w-100 my-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'weather' %}">Weather</a>
+                            <a class="nav-link text-center p-0 py-2" href="{% url 'weather' %}">Weather</a>
                         </li>
+                        <hr class="border w-100 my-0">
                     </ul>
                 </div>
             </nav>
@@ -54,9 +73,9 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-light border-top">
+    <footer class="footer mt-auto py-3 bg-dark">
         <div class="container text-center">
-            <span class="text-muted">Made by Thomas Biselx & Gloor Gian-Luca</span>
+            <span class="text-white">Made by Thomas Biselx & Gloor Gian-Luca</span>
         </div>
     </footer>
 
