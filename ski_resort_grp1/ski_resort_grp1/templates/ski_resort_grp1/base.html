@@ -43,7 +43,7 @@
         <nav
           id="sidebar"
           class="col-md-2 d-none d-md-block bg-white border-right sidebar px-0"
-          style="height: calc(100vh - 113px)"
+          style="min-height: calc(100vh - 113px)"
         >
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
@@ -114,7 +114,7 @@
         </nav>
 
         <!-- Main Content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0" style="min-height: 100vh;">
           {% block content %}{% endblock %}
         </main>
       </div>
