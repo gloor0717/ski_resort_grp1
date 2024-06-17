@@ -1,94 +1,98 @@
-{% extends 'ski_resort_grp1/base.html' %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Map - Ski Resort
+Dashboard{% endblock %} {% block extra_head %}
+<style>
+  main {
+    height: calc(100vh - 112px);
+  }
+  #map {
+    height: 100%;
+  }
+</style>
+{% endblock %} {% block content %}
+<div id="map" class="w-100"></div>
+{% endblock %} {% block extra_js %}
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  var map = L.map("map", {
+    center: [46.31415226088029, 7.402238579358967],
+    zoom: 13,
+    minZoom: 9,
+    maxBounds: [
+      [45.5, 6.5],
+      [47.0, 8.5],
+    ],
+  });
 
-{% block title %}Map - Ski Resort Dashboard{% endblock %}
+  var busIcon = L.icon({
+    iconUrl: "/static/images/bus_logo.png",
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+  });
 
-{% block extra_head %}
-    <style>
-        main {
-            height: calc(100vh - 112px);
-        }
-        #map {
-            height: 100%;
-        }
-    </style>
-{% endblock %}
+  var osmLayer = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+    }
+  ).addTo(map);
 
-{% block content %}
-    <div id="map" class="w-100"></div>
-{% endblock %}
+  var openSnowMapLayer = L.tileLayer(
+    "https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png",
+    {
+      minZoom: 9,
+      maxZoom: 18,
+      attribution:
+        'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & ODbL, &copy; <a href="https://www.opensnowmap.org/iframes/data.html">www.opensnowmap.org</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    }
+  );
 
-{% block extra_js %}
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        var map = L.map('map', {
-            center: [46.31415226088029, 7.402238579358967],
-            zoom: 13,
-            minZoom: 9,
-            maxBounds: [
-                [45.5, 6.5],
-                [47.0, 8.5]
-            ]
-        });
+  var baseMaps = {
+    OpenStreetMap: osmLayer,
+    OpenSnowMap: openSnowMapLayer,
+  };
 
-        var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+  L.control.layers(baseMaps).addTo(map);
+
+  function fetchData(url, style, popupContent) {
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        L.geoJSON(data, {
+          style: style,
+          pointToLayer: function (feature, latlng) {
+            return L.marker(latlng);
+          },
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup(popupContent(feature));
+          },
         }).addTo(map);
+      });
+  }
 
-        var openSnowMapLayer = L.tileLayer('https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png', {
-            minZoom: 9,
-            maxZoom: 18,
-            attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & ODbL, &copy; <a href="https://www.opensnowmap.org/iframes/data.html">www.opensnowmap.org</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-        });
+  // Add ski routes
+  fetchData("/ski_routes_geojson/", { color: "blue" }, function (feature) {
+    return `<b>${feature.properties.name}</b><br>Difficulty: ${feature.properties.difficulty}`;
+  });
 
-        var baseMaps = {
-            "OpenStreetMap": osmLayer,
-            "OpenSnowMap": openSnowMapLayer
-        };
+  // Add ski lifts
+  fetchData("/ski_lifts_geojson/", { color: "red" }, function (feature) {
+    return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type}`;
+  });
 
-        L.control.layers(baseMaps).addTo(map);
+  // Add restaurants
+  fetchData("/restaurants_geojson/", null, function (feature) {
+    return `<b>${feature.properties.name}</b><br>Website: <a href="${feature.properties.website}" target="_blank">${feature.properties.website}</a>`;
+  });
 
-        function fetchData(url, style, popupContent) {
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    L.geoJSON(data, {
-                        style: style,
-                        pointToLayer: function (feature, latlng) {
-                            return L.marker(latlng);
-                        },
-                        onEachFeature: function (feature, layer) {
-                            layer.bindPopup(popupContent(feature));
-                        }
-                    }).addTo(map);
-                });
-        }
+  // Add bus stations
+  fetchData("/bus_stations_geojson/", null, function (feature) {
+    return `<b>${feature.properties.name}</b>`;
+  });
 
-        // Add ski routes
-        fetchData('/ski_routes_geojson/', 
-            { color: 'blue' }, 
-            function (feature) { 
-                return `<b>${feature.properties.name}</b><br>Difficulty: ${feature.properties.difficulty}`; 
-            });
-
-        // Add ski lifts
-        fetchData('/ski_lifts_geojson/', 
-            { color: 'red' }, 
-            function (feature) { 
-                return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type}`; 
-            });
-
-        // Add restaurants
-        fetchData('/restaurants_geojson/', 
-            null, 
-            function (feature) { 
-                return `<b>${feature.properties.name}</b><br>Website: <a href="${feature.properties.website}" target="_blank">${feature.properties.website}</a>`; 
-            });
-
-        // Add bus stations
-        fetchData('/bus_stations_geojson/', 
-            null, 
-            function (feature) { 
-                return `<b>${feature.properties.name}</b>`; 
-            });
-    </script>
+  // Add base stations
+  fetchData("/base_stations_geojson/", null, function (feature) {
+    return `<b>${feature.properties.name}</b>`;
+  });
+</script>
 {% endblock %}

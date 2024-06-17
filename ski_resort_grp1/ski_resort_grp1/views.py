@@ -5,7 +5,7 @@ import json
 from urllib.request import urlopen, Request
 from urllib.parse import quote_plus
 from urllib.error import HTTPError
-from .models import SkiRoute, SkiLift, Restaurant, BusStation
+from .models import SkiRoute, SkiLift, Restaurant, BusStation, BaseStation
 
 def index(request):
     return render(request, 'ski_resort_grp1/index.html')
@@ -29,6 +29,10 @@ def bus_stations(request):
     bus_stations = BusStation.objects.all()
     return render(request, 'ski_resort_grp1/bus_stations.html', {'bus_stations': bus_stations})
 
+def base_stations(request):
+    base_stations = BaseStation.objects.all()
+    return render(request, 'ski_resort_grp1/base_stations.html', {'base_stations': base_stations})
+
 def ski_lifts_geojson(request):
     ski_lifts = SkiLift.objects.all()
     ser = serialize('geojson', ski_lifts, geometry_field='geometry', fields=('name', 'type'))
@@ -47,6 +51,11 @@ def restaurants_geojson(request):
 def bus_stations_geojson(request):
     bus_stations = BusStation.objects.all()
     ser = serialize('geojson', bus_stations, geometry_field='geometry', fields=('name'))
+    return HttpResponse(ser, content_type='application/json')
+
+def base_stations_geojson(request):
+    base_stations = BaseStation.objects.all()
+    ser = serialize('geojson', base_stations, geometry_field='geometry', fields=('name'))
     return HttpResponse(ser, content_type='application/json')
 
 def weather(request):

@@ -1,87 +1,147 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>{% block title %}Ski Resort Dashboard{% endblock %}</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
     {% block extra_head %}{% endblock %}
-</head>
-<style>
+  </head>
+  <style>
     .nav-item a {
-        color: #343A40;
+      color: #343a40;
     }
 
     .nav-item a:hover {
-        color: #FFFFFF;
+      color: #ffffff;
     }
 
     .nav-item:hover {
-        background-color: #343A40;
+      background-color: #343a40;
     }
-</style>
-<body>
+  </style>
+  <body>
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-light bg-warning">
-        <a class="navbar-brand text-white" href="{% url 'index' %}">Anzère Ski Resort</a>
+      <a class="navbar-brand text-white" href="{% url 'index' %}"
+        >Anzère Ski Resort</a
+      >
     </nav>
 
     <div class="container-fluid">
-        <div class="row">
-            <!-- Side Panel -->
-            <nav id="sidebar" class="col-md-2 d-none d-md-block bg-white border-right sidebar px-0" style="height: calc(100vh - 113px);">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link text-center p-0 py-2" href="{% url 'index' %}">Dashboard</a>
-                        </li>
-                        <hr class="border w-100 my-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-center p-0 py-2" href="{% url 'map' %}">Map</a>
-                        </li>
-                        <hr class="border w-100 my-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-center p-0 py-2" href="{% url 'ski_routes' %}">Ski Routes</a>
-                        </li>
-                        <hr class="border w-100 my-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-center p-0 py-2" href="{% url 'ski_lifts' %}">Ski Lifts</a>
-                        </li>
-                        <hr class="border w-100 my-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-center p-0 py-2" href="{% url 'restaurants' %}">Restaurants</a>
-                        </li>
-                        <hr class="border w-100 my-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-center p-0 py-2" href="{% url 'bus_stations' %}">Bus Stations</a>
-                        </li>
-                        <hr class="border w-100 my-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-center p-0 py-2" href="{% url 'weather' %}">Weather</a>
-                        </li>
-                        <hr class="border w-100 my-0">
-                    </ul>
-                </div>
-            </nav>
+      <div class="row">
+        <!-- Side Panel -->
+        <nav
+          id="sidebar"
+          class="col-md-2 d-none d-md-block bg-white border-right sidebar px-0"
+          style="height: calc(100vh - 113px)"
+        >
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'index' %}"
+                  >Dashboard</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a class="nav-link text-center p-0 py-2" href="{% url 'map' %}"
+                  >Map</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'ski_routes' %}"
+                  >Ski Routes</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'ski_lifts' %}"
+                  >Ski Lifts</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'restaurants' %}"
+                  >Restaurants</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'bus_stations' %}"
+                  >Bus Stations</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'base_stations' %}"
+                  >Bases Stations</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'weather' %}"
+                  >Weather</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+            </ul>
+          </div>
+        </nav>
 
-            <!-- Main Content -->
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0">
-                {% block content %}{% endblock %}
-            </main>
-        </div>
+        <!-- Main Content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0">
+          {% block content %}{% endblock %}
+        </main>
+      </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-dark">
-        <div class="container text-center">
-            <span class="text-white">Made by Thomas Biselx & Gloor Gian-Luca</span>
-        </div>
+      <div class="container text-center">
+        <span class="text-white">Made by Thomas Biselx & Gloor Gian-Luca</span>
+      </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRausDib9VVpH8WvC/g" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGaMr9+8AM/V5BhC7YhF2FUM7j" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+xUAKqvK6Qr49eI1gyq4lAiw2LkkI0L48BEOE5eTUF8C7vRlb" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRausDib9VVpH8WvC/g"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGaMr9+8AM/V5BhC7YhF2FUM7j"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+xUAKqvK6Qr49eI1gyq4lAiw2LkkI0L48BEOE5eTUF8C7vRlb"
+      crossorigin="anonymous"
+    ></script>
     {% block extra_js %}{% endblock %}
-</body>
+  </body>
 </html>
