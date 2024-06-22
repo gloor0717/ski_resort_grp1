@@ -80,6 +80,14 @@
               <li class="nav-item">
                 <a
                   class="nav-link text-center p-0 py-2"
+                  href="{% url 'parkings' %}"
+                  >Parkings</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
                   href="{% url 'restaurants' %}"
                   >Restaurants</a
                 >
@@ -109,12 +117,24 @@
                 >
               </li>
               <hr class="border w-100 my-0" />
+              <li class="nav-item">
+                <a
+                  class="nav-link text-center p-0 py-2"
+                  href="{% url 'transport' %}"
+                  >Transport</a
+                >
+              </li>
+              <hr class="border w-100 my-0" />
             </ul>
           </div>
         </nav>
 
         <!-- Main Content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0" style="min-height: 100vh;">
+        <main
+          role="main"
+          class="col-md-9 ml-sm-auto col-lg-10 px-0"
+          style="min-height: 100vh"
+        >
           {% block content %}{% endblock %}
         </main>
       </div>

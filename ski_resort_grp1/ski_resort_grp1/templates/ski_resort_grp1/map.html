@@ -1,268 +1,418 @@
-{% extends 'ski_resort_grp1/base.html' %} 
-
-{% block title %}Map - Ski Resort Dashboard{% endblock %}
-
-{% block content %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Map - Ski Resort
+Dashboard{% endblock %} {% block content %}
 <div class="container my-3">
-    <div class="row">
-        <div class="col">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showRestaurants" checked>
-                <label class="form-check-label" for="showRestaurants">
-                    Show Restaurants
-                </label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showSkiRoutes" checked>
-                <label class="form-check-label" for="showSkiRoutes">
-                    Show Ski Routes
-                </label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showBlueSkiRoutes" checked>
-                <label class="form-check-label" for="showBlueSkiRoutes">
-                    Show Blue Ski Routes
-                </label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showRedSkiRoutes" checked>
-                <label class="form-check-label" for="showRedSkiRoutes">
-                    Show Red Ski Routes
-                </label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showBlackSkiRoutes" checked>
-                <label class="form-check-label" for="showBlackSkiRoutes">
-                    Show Black Ski Routes
-                </label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showSkiLifts" checked>
-                <label class="form-check-label" for="showSkiLifts">
-                    Show Ski Lifts
-                </label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showBusStations" checked>
-                <label class="form-check-label" for="showBusStations">
-                    Show Bus Stations
-                </label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="" id="showBaseStations" checked>
-                <label class="form-check-label" for="showBaseStations">
-                    Show Base Stations
-                </label>
-            </div>
+  <div class="row">
+    <div class="col">
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="showRestaurants"
+          checked
+        />
+        <label class="form-check-label" for="showRestaurants">
+          Show Restaurants
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check input"
+          type="checkbox"
+          value=""
+          id="showParkings"
+          checked
+        />
+        <label class="form-check-label" for="showParkings">
+          Show Parkings
+        </label>
         </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="showSkiRoutes"
+            checked
+          />
+          <label class="form-check-label" for="showSkiRoutes">
+            Show Ski Routes
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="showBlueSkiRoutes"
+            checked
+          />
+          <label class="form-check-label" for="showBlueSkiRoutes">
+            Show Blue Ski Routes
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="showRedSkiRoutes"
+            checked
+          />
+          <label class="form-check-label" for="showRedSkiRoutes">
+            Show Red Ski Routes
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="showBlackSkiRoutes"
+            checked
+          />
+          <label class="form-check-label" for="showBlackSkiRoutes">
+            Show Black Ski Routes
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="showSkiLifts"
+            checked
+          />
+          <label class="form-check-label" for="showSkiLifts">
+            Show Ski Lifts
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="showBusStations"
+            checked
+          />
+          <label class="form-check-label" for="showBusStations">
+            Show Bus Stations
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="showBaseStations"
+            checked
+          />
+          <label class="form-check-label" for="showBaseStations">
+            Show Base Stations
+          </label>
+        </div>
+      </div>
     </div>
-</div>
-<div id="map" class="w-100 h-75"></div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-    var map = L.map('map', {
-        center: [46.31415226088029, 7.402238579358967],
-        zoom: 13,
-        minZoom: 9,
-        maxBounds: [
-            [45.5, 6.5],
-            [47.0, 8.5]
-        ]
+  </div>
+  <div id="map" class="w-100 h-75"></div>
+  {% endblock %} {% block extra_js %}
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map("map", {
+      center: [46.31415226088029, 7.402238579358967],
+      zoom: 13,
+      minZoom: 9,
+      maxBounds: [
+        [45.5, 6.5],
+        [47.0, 8.5],
+      ],
     });
 
     var busIcon = L.icon({
-        iconUrl: "/static/images/bus_logo.png",
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [0, -32],
+      iconUrl: "/static/images/bus_logo.png",
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32],
     });
 
-    var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    var osmLayer = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
         maxZoom: 19,
-    }).addTo(map);
+      }
+    ).addTo(map);
 
-    var openSnowMapLayer = L.tileLayer('https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png', {
+    var openSnowMapLayer = L.tileLayer(
+      "https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png",
+      {
         minZoom: 9,
         maxZoom: 18,
-        attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & ODbL, &copy; <a href="https://www.opensnowmap.org/iframes/data.html">www.opensnowmap.org</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-    });
+        attribution:
+          'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & ODbL, &copy; <a href="https://www.opensnowmap.org/iframes/data.html">www.opensnowmap.org</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+      }
+    );
 
     var baseMaps = {
-        "OpenStreetMap": osmLayer,
-        "OpenSnowMap": openSnowMapLayer
+      OpenStreetMap: osmLayer,
+      OpenSnowMap: openSnowMapLayer,
     };
 
     L.control.layers(baseMaps).addTo(map);
 
-    var skiRoutesLayer, blueSkiRoutesLayer, redSkiRoutesLayer, blackSkiRoutesLayer, skiLiftsLayer, restaurantsLayer, busStationsLayer, baseStationsLayer;
+    var skiRoutesLayer,
+      blueSkiRoutesLayer,
+      redSkiRoutesLayer,
+      blackSkiRoutesLayer,
+      skiLiftsLayer,
+      restaurantsLayer,
+      parkingsLayer,
+      busStationsLayer,
+      baseStationsLayer;
 
     function fetchData(url, styleFunction, popupContent, callback) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                var layer = L.geoJSON(data, {
-                    style: styleFunction,
-                    pointToLayer: function (feature, latlng) {
-                        return L.marker(latlng);
-                    },
-                    onEachFeature: function (feature, layer) {
-                        layer.bindPopup(popupContent(feature));
-                    }
-                });
-                callback(layer);
-            });
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          var layer = L.geoJSON(data, {
+            style: styleFunction,
+            pointToLayer: function (feature, latlng) {
+              return L.marker(latlng);
+            },
+            onEachFeature: function (feature, layer) {
+              layer.bindPopup(popupContent(feature));
+            },
+          });
+          callback(layer);
+        });
     }
 
     function skiRouteStyle(feature) {
-        switch (feature.properties.difficulty.toLowerCase()) {
-            case 'blue': return { color: 'blue' };
-            case 'red': return { color: 'red' };
-            case 'black': return { color: 'black' };
-            default: return { color: 'gray' };
-        }
+      switch (feature.properties.difficulty.toLowerCase()) {
+        case "blue":
+          return { color: "blue" };
+        case "red":
+          return { color: "red" };
+        case "black":
+          return { color: "black" };
+        default:
+          return { color: "gray" };
+      }
     }
 
-    function skiLiftStyle(feature) {
-        return { color: '#006400' }; // DarkGreen for all types
-    }
+  function skiLiftStyle(feature) {
+  // Vérifie si l'état du lift est False
+  if (feature.properties.state === false) {
+    return { color: "#FFA500" }; // Orange si l'état est False
+  } else {
+    return { color: "#006400" }; // DarkGreen pour tous les autres cas
+  }
+}
 
     function restaurantStyle(feature) {
-        return { color: 'brown' }; // Brown for all restaurants
+      return { color: "brown" }; // Brown for all restaurants
     }
 
     function baseStationStyle(feature) {
-        return { color: '#FFC107' }; // #FFC107 for all base stations
+      return { color: "#FFC107" }; // #FFC107 for all base stations
     }
 
     // Add ski routes with styled colors
-    fetchData('/ski_routes_geojson/', skiRouteStyle, function (feature) { 
-        return `<b>${feature.properties.name}</b><br>Difficulty: ${feature.properties.difficulty}`; 
-    }, function(layer) {
+    fetchData(
+      "/ski_routes_geojson/",
+      skiRouteStyle,
+      function (feature) {
+        return `<b>${feature.properties.name}</b><br>Difficulty: ${feature.properties.difficulty}`;
+      },
+      function (layer) {
         skiRoutesLayer = layer;
         map.addLayer(skiRoutesLayer);
-    });
+      }
+    );
 
     // Add ski lifts with dark green color
-    fetchData('/ski_lifts_geojson/', skiLiftStyle, function (feature) { 
-        return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type}`; 
-    }, function(layer) {
+    fetchData(
+      "/ski_lifts_geojson/",
+      skiLiftStyle,
+      function (feature) {
+        return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type} <br>State: ${feature.properties.state ? 'Open' : 'Closed'}`;
+      },
+      function (layer) {
         skiLiftsLayer = layer;
         map.addLayer(skiLiftsLayer);
-    });
+      }
+    );
+
+    // Add parkings with gray color
+    fetchData(
+      "/parkings_geojson/",
+      null,
+      function (feature) {
+        return `<b>${feature.properties.name}</b><br>Capacity: ${feature.properties.capacity}`;
+      },
+      function (layer) {
+        parkingsLayer = layer;
+        map.addLayer(parkingsLayer);
+      }
+    );
 
     // Add restaurants with brown color
-    fetchData('/restaurants_geojson/', restaurantStyle, function (feature) { 
-        return `<b>${feature.properties.name}</b><br>Website: <a href="${feature.properties.website}" target="_blank">${feature.properties.website}</a>`; 
-    }, function(layer) {
+    fetchData(
+      "/restaurants_geojson/",
+      restaurantStyle,
+      function (feature) {
+        return `<b>${feature.properties.name}</b><br>Website: <a href="${feature.properties.website}" target="_blank">${feature.properties.website}</a>`;
+      },
+      function (layer) {
         restaurantsLayer = layer;
         map.addLayer(restaurantsLayer);
-    });
+      }
+    );
 
     // Add bus stations
-    fetchData('/bus_stations_geojson/', null, function (feature) { 
-        return `<b>${feature.properties.name}</b>`; 
-    }, function(layer) {
+    fetchData(
+      "/bus_stations_geojson/",
+      null,
+      function (feature) {
+        return `<b>${feature.properties.name}</b>
+        <button onclick="redirectToTransport('${feature.properties.name}')">See bus</button>`;
+      },
+      function (layer) {
         busStationsLayer = layer;
         map.addLayer(busStationsLayer);
-    });
+      }
+    );
+
+    function redirectToTransport(fromStation) {
+        var url = `/transport/?from=${encodeURIComponent(fromStation)}`;
+    window.location.href = url;
+    }
 
     // Add base stations with #FFC107 color
-    fetchData('/base_stations_geojson/', baseStationStyle, function (feature) { 
-        return `<b>${feature.properties.name}</b>`; 
-    }, function(layer) {
+    fetchData(
+      "/base_stations_geojson/",
+      baseStationStyle,
+            function (feature) {
+        return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type}<br>Schedule: ${feature.properties.schedule}`;
+      },
+      function (layer) {
         baseStationsLayer = layer;
         map.addLayer(baseStationsLayer);
-    });
+      }
+    );
 
-    document.getElementById('showRestaurants').addEventListener('change', function() {
+    document
+      .getElementById("showRestaurants")
+      .addEventListener("change", function () {
         if (this.checked) {
-            map.addLayer(restaurantsLayer);
+          map.addLayer(restaurantsLayer);
         } else {
-            map.removeLayer(restaurantsLayer);
+          map.removeLayer(restaurantsLayer);
         }
-    });
+      });
 
-    document.getElementById('showSkiRoutes').addEventListener('change', function() {
+    document
+      .getElementById("showParkings")
+      .addEventListener("change", function () {
         if (this.checked) {
-            map.addLayer(skiRoutesLayer);
+          map.addLayer(parkingsLayer);
         } else {
-            map.removeLayer(skiRoutesLayer);
+          map.removeLayer(parkingsLayer);
         }
-    });
+      });
 
-    document.getElementById('showBlueSkiRoutes').addEventListener('change', function() {
+    document
+      .getElementById("showSkiRoutes")
+      .addEventListener("change", function () {
         if (this.checked) {
-            skiRoutesLayer.eachLayer(function(layer) {
-                if (layer.feature.properties.difficulty.toLowerCase() === 'blue') {
-                    map.addLayer(layer);
-                }
-            });
+          map.addLayer(skiRoutesLayer);
         } else {
-            skiRoutesLayer.eachLayer(function(layer) {
-                if (layer.feature.properties.difficulty.toLowerCase() === 'blue') {
-                    map.removeLayer(layer);
-                }
-            });
+          map.removeLayer(skiRoutesLayer);
         }
-    });
+      });
 
-    document.getElementById('showRedSkiRoutes').addEventListener('change', function() {
+    document
+      .getElementById("showBlueSkiRoutes")
+      .addEventListener("change", function () {
         if (this.checked) {
-            skiRoutesLayer.eachLayer(function(layer) {
-                if (layer.feature.properties.difficulty.toLowerCase() === 'red') {
-                    map.addLayer(layer);
-                }
-            });
+          skiRoutesLayer.eachLayer(function (layer) {
+            if (layer.feature.properties.difficulty.toLowerCase() === "blue") {
+              map.addLayer(layer);
+            }
+          });
         } else {
-            skiRoutesLayer.eachLayer(function(layer) {
-                if (layer.feature.properties.difficulty.toLowerCase() === 'red') {
-                    map.removeLayer(layer);
-                }
-            });
+          skiRoutesLayer.eachLayer(function (layer) {
+            if (layer.feature.properties.difficulty.toLowerCase() === "blue") {
+              map.removeLayer(layer);
+            }
+          });
         }
-    });
+      });
 
-    document.getElementById('showBlackSkiRoutes').addEventListener('change', function() {
+    document
+      .getElementById("showRedSkiRoutes")
+      .addEventListener("change", function () {
         if (this.checked) {
-            skiRoutesLayer.eachLayer(function(layer) {
-                if (layer.feature.properties.difficulty.toLowerCase() === 'black') {
-                    map.addLayer(layer);
-                }
-            });
+          skiRoutesLayer.eachLayer(function (layer) {
+            if (layer.feature.properties.difficulty.toLowerCase() === "red") {
+              map.addLayer(layer);
+            }
+          });
         } else {
-            skiRoutesLayer.eachLayer(function(layer) {
-                if (layer.feature.properties.difficulty.toLowerCase() === 'black') {
-                    map.removeLayer(layer);
-                }
-            });
+          skiRoutesLayer.eachLayer(function (layer) {
+            if (layer.feature.properties.difficulty.toLowerCase() === "red") {
+              map.removeLayer(layer);
+            }
+          });
         }
-    });
+      });
 
-    document.getElementById('showSkiLifts').addEventListener('change', function() {
+    document
+      .getElementById("showBlackSkiRoutes")
+      .addEventListener("change", function () {
         if (this.checked) {
-            map.addLayer(skiLiftsLayer);
+          skiRoutesLayer.eachLayer(function (layer) {
+            if (layer.feature.properties.difficulty.toLowerCase() === "black") {
+              map.addLayer(layer);
+            }
+          });
         } else {
-            map.removeLayer(skiLiftsLayer);
+          skiRoutesLayer.eachLayer(function (layer) {
+            if (layer.feature.properties.difficulty.toLowerCase() === "black") {
+              map.removeLayer(layer);
+            }
+          });
         }
-    });
+      });
 
-    document.getElementById('showBusStations').addEventListener('change', function() {
+    document
+      .getElementById("showSkiLifts")
+      .addEventListener("change", function () {
         if (this.checked) {
-            map.addLayer(busStationsLayer);
+          map.addLayer(skiLiftsLayer);
         } else {
-            map.removeLayer(busStationsLayer);
+          map.removeLayer(skiLiftsLayer);
         }
-    });
+      });
 
-    document.getElementById('showBaseStations').addEventListener('change', function() {
+    document
+      .getElementById("showBusStations")
+      .addEventListener("change", function () {
         if (this.checked) {
-            map.addLayer(baseStationsLayer);
+          map.addLayer(busStationsLayer);
         } else {
-            map.removeLayer(baseStationsLayer);
+          map.removeLayer(busStationsLayer);
         }
-    });
-</script>
-{% endblock %}
+      });
+
+    document
+      .getElementById("showBaseStations")
+      .addEventListener("change", function () {
+        if (this.checked) {
+          map.addLayer(baseStationsLayer);
+        } else {
+          map.removeLayer(baseStationsLayer);
+        }
+      });
+  </script>
+  {% endblock %}
+</div>

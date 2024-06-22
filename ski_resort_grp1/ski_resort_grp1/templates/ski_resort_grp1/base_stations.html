@@ -1,15 +1,22 @@
 {% extends 'ski_resort_grp1/base.html' %} {% block title %}Base Stations - Ski
-Resort Dashboard{% endblock %} {% block content %}
+Resort Dashboard{%endblock %} {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h2 class="my-4">Base Stations</h2>
-      <ul class="list-group">
-        {% for base in base_stations %}
-        <li class="list-group-item">{{ base.name }}</li>
+  <h2>Base Stations</h2>
+  {% if grouped_stations %}
+  <ul>
+    {% for base_name, stations in grouped_stations.items %}
+    <li>
+      {{ base_name }}
+      <ul>
+        {% for station in stations %}
+        <li>{{ station.type }} - Schedule: {{ station.schedule }}</li>
         {% endfor %}
       </ul>
-    </div>
-  </div>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No base stations found.</p>
+  {% endif %}
 </div>
 {% endblock %}

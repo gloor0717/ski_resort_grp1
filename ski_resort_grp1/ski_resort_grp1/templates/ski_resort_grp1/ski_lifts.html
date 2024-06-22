@@ -1,18 +1,18 @@
-{% extends 'ski_resort_grp1/base.html' %}
-
-{% block title %}Ski Lifts - Ski Resort Dashboard{% endblock %}
-
-{% block content %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Ski Lifts - Ski
+Resort Dashboard{% endblock %} {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-12">
-    <h2 class="my-4">Ski Lifts</h2>
-    <ul class="list-group">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="my-4">Ski Lifts</h2>
+      <ul class="list-group">
         {% for lift in ski_lifts %}
-        <li class="list-group-item">{{ lift.name }} - {{ lift.type }}</li>
+        <li class="list-group-item">
+          {{ lift.name }} - {{ lift.type }} - {{
+          lift.state|yesno:"Open,Closed"}}
+        </li>
         {% endfor %}
-    </ul>
-        </div>
+      </ul>
     </div>
+  </div>
 </div>
 {% endblock %}
