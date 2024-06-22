@@ -63,7 +63,7 @@ def restaurants_geojson(request):
 
 def bus_stations_geojson(request):
     bus_stations = BusStation.objects.all()
-    ser = serialize('geojson', bus_stations, geometry_field='geometry', fields=('name'))
+    ser = serialize('geojson', bus_stations, geometry_field='geometry', fields=('name',))
     return HttpResponse(ser, content_type='application/json')
 
 def base_stations_geojson(request):
@@ -93,3 +93,32 @@ def weather(request):
         'weather_data': weather_data
     }
     return render(request, 'ski_resort_grp1/weather.html', context)
+
+def transport(request):
+    from_station = request.GET.get('from', 'Anzere')
+    to_station = request.GET.get('to', 'Sion')
+    date = request.GET.get('date')
+    time = request.GET.get('time')
+
+    from_station_encoded = quote_plus(from_station)
+    to_station_encoded = quote_plus(to_station)
+    transport_url = f'https://transport.opendata.ch/v1/connections?from={from_station_encoded}&to={to_station_encoded}'
+    
+    if date:
+        transport_url += f'&date={date}'
+    if time:
+        transport_url += f'&time={time}'
+
+    try:
+        req = Request(transport_url)
+        with urlopen(req) as response:
+            response_data = response.read()
+            encoding = response.info().get_content_charset('utf-8')
+            transport_data = json.loads(response_data.decode(encoding))
+    except Exception as e:
+        return HttpResponse(f"An error occurred: {e}", status=500)
+
+    context = {
+        'transport_data': transport_data
+    }
+    return render(request, 'ski_resort_grp1/transport.html', context)

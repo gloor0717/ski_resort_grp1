@@ -273,13 +273,19 @@ Dashboard{% endblock %} {% block content %}
       "/bus_stations_geojson/",
       null,
       function (feature) {
-        return `<b>${feature.properties.name}</b>`;
+        return `<b>${feature.properties.name}</b>
+        <button onclick="redirectToTransport('${feature.properties.name}')">See bus</button>`;
       },
       function (layer) {
         busStationsLayer = layer;
         map.addLayer(busStationsLayer);
       }
     );
+
+    function redirectToTransport(fromStation) {
+        var url = `/transport/?from=${encodeURIComponent(fromStation)}`;
+    window.location.href = url;
+    }
 
     // Add base stations with #FFC107 color
     fetchData(
