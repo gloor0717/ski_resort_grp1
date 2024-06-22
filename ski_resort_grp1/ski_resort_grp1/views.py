@@ -5,7 +5,9 @@ import json
 from urllib.request import urlopen, Request
 from urllib.parse import quote_plus
 from urllib.error import HTTPError
-from .models import SkiRoute, SkiLift, Restaurant, BusStation, BaseStation
+from .models import SkiRoute, SkiLift, Parking, Restaurant, BusStation, BaseStation
+from itertools import groupby
+from operator import attrgetter
 
 def index(request):
     return render(request, 'ski_resort_grp1/index.html')
@@ -21,6 +23,10 @@ def ski_lifts(request):
     ski_lifts = SkiLift.objects.all()
     return render(request, 'ski_resort_grp1/ski_lifts.html', {'ski_lifts': ski_lifts})
 
+def parkings(request):
+    parkings = Parking.objects.all()
+    return render(request, 'ski_resort_grp1/parkings.html', {'parkings': parkings})
+
 def restaurants(request):
     restaurants = Restaurant.objects.all()
     return render(request, 'ski_resort_grp1/restaurants.html', {'restaurants': restaurants})
@@ -30,17 +36,24 @@ def bus_stations(request):
     return render(request, 'ski_resort_grp1/bus_stations.html', {'bus_stations': bus_stations})
 
 def base_stations(request):
-    base_stations = BaseStation.objects.all()
-    return render(request, 'ski_resort_grp1/base_stations.html', {'base_stations': base_stations})
+    base_stations = BaseStation.objects.all().order_by('name')
+    grouped_stations = {k: list(v) for k, v in groupby(base_stations, key=attrgetter('name'))}
+    return render(request, 'ski_resort_grp1/base_stations.html', {'grouped_stations': grouped_stations})
+    
 
 def ski_lifts_geojson(request):
     ski_lifts = SkiLift.objects.all()
-    ser = serialize('geojson', ski_lifts, geometry_field='geometry', fields=('name', 'type'))
+    ser = serialize('geojson', ski_lifts, geometry_field='geometry', fields=('name', 'type', 'state'))
     return HttpResponse(ser, content_type='application/json')
 
 def ski_routes_geojson(request):
     ski_routes = SkiRoute.objects.all()
     ser = serialize('geojson', ski_routes, geometry_field='geometry', fields=('name', 'difficulty'))
+    return HttpResponse(ser, content_type='application/json')
+
+def parkings_geojson(request):
+    parkings = Parking.objects.all()
+    ser = serialize('geojson', parkings, geometry_field='geometry', fields=('name', 'capacity'))
     return HttpResponse(ser, content_type='application/json')
 
 def restaurants_geojson(request):
@@ -55,7 +68,7 @@ def bus_stations_geojson(request):
 
 def base_stations_geojson(request):
     base_stations = BaseStation.objects.all()
-    ser = serialize('geojson', base_stations, geometry_field='geometry', fields=('name'))
+    ser = serialize('geojson', base_stations, geometry_field='geometry', fields=('name', 'type', 'schedule'))
     return HttpResponse(ser, content_type='application/json')
 
 def weather(request):
