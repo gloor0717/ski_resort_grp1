@@ -4,15 +4,17 @@ class SkiRoute(models.Model):
     name = models.CharField(max_length=100)
     difficulty = models.CharField(max_length=50)
     geometry = models.MultiLineStringField()
+    direction = models.CharField(max_length=10, choices=[('down', 'Down')])
 
     def __str__(self):
         return self.name
-    
+
 class SkiLift(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=50)
     state = models.BooleanField()
     geometry = models.LineStringField()
+    direction = models.CharField(max_length=10, choices=[('up', 'Up')])
 
     def __str__(self):
         return self.name

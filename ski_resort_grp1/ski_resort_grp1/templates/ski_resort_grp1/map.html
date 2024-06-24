@@ -1,5 +1,4 @@
-{% extends 'ski_resort_grp1/base.html' %} {% block title %}Map - Ski Resort
-Dashboard{% endblock %} {% block content %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Map - Ski Resort Dashboard{% endblock %} {% block content %}
 <div class="container my-3">
   <div class="row">
     <div class="col">
@@ -114,7 +113,39 @@ Dashboard{% endblock %} {% block content %}
       </div>
     </div>
   </div>
-  <div id="map" class="w-100 h-75"></div>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Carte -->
+    <div class="col-md-9">
+      <div id="map" class="w-100" style="height: 70vh;"></div>
+    </div>
+    <!-- Éléments de recherche -->
+    <div class="col-md-3">
+      <div class="row">
+        <div class="col">
+          <label for="startPoint">Start Point:</label>
+          <select id="startPoint" class="form-control"> <option value="">Select Start Point</option> </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="endPoint">Start Point:</label>
+          <select id="endPoint" class="form-control"> <option value="">Select End Point</option></select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button id="calculatePath" class="btn btn-primary mt-3">Calculate Shortest Path</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p id="serverResponse">Response will appear here</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   {% endblock %} {% block extra_js %}
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
@@ -159,32 +190,177 @@ Dashboard{% endblock %} {% block content %}
 
     L.control.layers(baseMaps).addTo(map);
 
-    var skiRoutesLayer,
-      blueSkiRoutesLayer,
-      redSkiRoutesLayer,
-      blackSkiRoutesLayer,
-      skiLiftsLayer,
-      restaurantsLayer,
-      parkingsLayer,
-      busStationsLayer,
-      baseStationsLayer;
+    var layers = {
+      skiRoutesLayer: null,
+      skiLiftsLayer: null,
+      restaurantsLayer: null,
+      parkingsLayer: null,
+      busStationsLayer: null,
+      baseStationsLayer: null,
+      startMarker: null,
+      endMarker: null,
+      shortestPathLayer: null,
+    };
 
-    function fetchData(url, styleFunction, popupContent, callback) {
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          var layer = L.geoJSON(data, {
-            style: styleFunction,
-            pointToLayer: function (feature, latlng) {
-              return L.marker(latlng);
-            },
-            onEachFeature: function (feature, layer) {
-              layer.bindPopup(popupContent(feature));
-            },
+    function fetchData(url, styleFunction, popupContent, layerName) {
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      var layer = L.geoJSON(data, {
+        style: styleFunction,
+        pointToLayer: function (feature, latlng) {
+          return L.marker(latlng);
+        },
+        onEachFeature: function (feature, layer) {
+          layer.bindPopup(popupContent(feature));
+          layer.on("click", function () {
+            handleLayerClick(feature, layer);
           });
-          callback(layer);
-        });
+        },
+      });
+      layers[layerName] = layer;
+      map.addLayer(layer);
+      if (layerName === "restaurantsLayer") {
+        populateDropdowns(data, "restaurants");
+      } else if (layerName === "baseStationsLayer") {
+        populateDropdowns(data, "baseStations");
+      }
+    });
+}
+
+function populateDropdowns(data, layerType) {
+  function getCentroid(coords) {
+    let x = 0, y = 0, n = coords.length;
+    for (let i = 0; i < n; i++) {
+      x += coords[i][0];
+      y += coords[i][1];
     }
+    return [y / n, x / n]; // Returning [latitude, longitude]
+  }
+
+  // Clear existing options first to avoid duplicates
+  if (layerType === "restaurants") {
+    console.log("Clearing and populating dropdowns for restaurants");
+    document.getElementById("startPoint").innerHTML = '<option value="">Select Start Point</option>';
+    document.getElementById("endPoint").innerHTML = '<option value="">Select End Point</option>';
+  }
+
+  data.features.forEach((feature) => {
+    let coords = feature.geometry.type === "Polygon" ? feature.geometry.coordinates[0] : feature.geometry.coordinates;
+    let centroid = getCentroid(coords);
+    let lat = centroid[0];
+    let lng = centroid[1];
+    let optionText = feature.properties.name;
+
+    // Create new option element for start point dropdown
+    var startOption = document.createElement("option");
+    startOption.value = lat + "," + lng; // Correct format
+    startOption.textContent = optionText;
+    document.getElementById("startPoint").appendChild(startOption);
+
+    // Create a similar option for the end point dropdown
+    var endOption = document.createElement("option");
+    endOption.value = lat + "," + lng; // Correct format
+    endOption.textContent = optionText;
+    document.getElementById("endPoint").appendChild(endOption);
+  });
+}
+
+document.getElementById("calculatePath").addEventListener("click", function () {
+  var startValue = document.getElementById("startPoint").value;
+  var endValue = document.getElementById("endPoint").value;
+
+  console.log("Start Value: ", startValue);
+  console.log("End Value: ", endValue);
+
+  if (startValue && endValue) {
+    var startCoords = startValue.split(",");
+    var endCoords = endValue.split(",");
+
+    console.log("Start Coords: ", startCoords);
+    console.log("End Coords: ", endCoords);
+
+    if (startCoords.length === 2 && endCoords.length === 2) {
+      var startLat = startCoords[0];
+      var startLng = startCoords[1];
+      var endLat = endCoords[0];
+      var endLng = endCoords[1];
+
+      fetch(`/shortest_path/?start_x=${startLng}&start_y=${startLat}&end_x=${endLng}&end_y=${endLat}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log("Server Response: ", data); // Logging the server response
+          if (data.error) {
+            document.getElementById('serverResponse').innerText = 'Error: ' + data.error;
+          } else {
+            displayPath(data);
+            document.getElementById('serverResponse').innerText = 'Path successfully displayed on the map.';
+          }
+        })
+        .catch(error => {
+          document.getElementById('serverResponse').innerText = 'Error: ' + error.message;
+        });
+    } else {
+      alert("Please select both start and end points.");
+      document.getElementById('serverResponse').innerText = 'Error: Please select both start and end points.';
+    }
+  } else {
+    alert("Please select both start and end points.");
+    document.getElementById('serverResponse').innerText = 'Error: Please select both start and end points.';
+  }
+});
+
+    function displayPath(pathData) {
+      if (layers.shortestPathLayer) {
+        map.removeLayer(layers.shortestPathLayer);
+      }
+      layers.shortestPathLayer = L.geoJSON(pathData, {
+        style: { color: "green", weight: 5 }
+      }).addTo(map);
+    }
+
+    document.getElementById("calculatePath").addEventListener("click", function () {
+      var startSelect = document.getElementById("startPoint");
+      var endSelect = document.getElementById("endPoint");
+      var startIndex = startSelect.selectedIndex;
+      var endIndex = endSelect.selectedIndex;
+
+      // Ensure valid indices and prevent "Select..." options
+      if (startIndex > 0 && endIndex > 0) {
+        var startCoords = startSelect.value.split(",");
+        var endCoords = endSelect.value.split(",");
+
+        // Check if coordinates arrays are valid
+        if (startCoords.length === 2 && endCoords.length === 2) {
+          var startLat = startCoords[0];
+          var startLng = startCoords[1];
+          var endLat = endCoords[0];
+          var endLng = endCoords[1];
+
+          // Fetch request to the server for the shortest path
+          fetch(`/shortest_path/?start_x=${startLng}&start_y=${startLat}&end_x=${endLng}&end_y=${endLat}`)
+            .then(response => response.json())
+            .then(data => {
+              console.log("Server Response: ", data); // Logging the server response
+              if (data.error) {
+                document.getElementById('serverResponse').innerText = 'Error: ' + data.error;
+              } else {
+                displayPath(data);
+                document.getElementById('serverResponse').innerText = 'Path successfully displayed on the map.';
+              }
+            })
+            .catch(error => {
+              document.getElementById('serverResponse').innerText = 'Error: ' + error.message;
+            });
+        } else {
+          alert("Please select valid start and end points.");
+          document.getElementById('serverResponse').innerText = 'Error: Please select valid start and end points.';
+        }
+      } else {
+        alert("Please select both start and end points.");
+        document.getElementById('serverResponse').innerText = 'Error: Please select both start and end points.';
+      }
+    });
 
     function skiRouteStyle(feature) {
       switch (feature.properties.difficulty.toLowerCase()) {
@@ -199,14 +375,13 @@ Dashboard{% endblock %} {% block content %}
       }
     }
 
-  function skiLiftStyle(feature) {
-  // Vérifie si l'état du lift est False
-  if (feature.properties.state === false) {
-    return { color: "#FFA500" }; // Orange si l'état est False
-  } else {
-    return { color: "#006400" }; // DarkGreen pour tous les autres cas
-  }
-}
+    function skiLiftStyle(feature) {
+      if (feature.properties.state === false) {
+        return { color: "#FFA500" }; // Orange if state is False
+      } else {
+        return { color: "#006400" }; // DarkGreen for all other cases
+      }
+    }
 
     function restaurantStyle(feature) {
       return { color: "brown" }; // Brown for all restaurants
@@ -216,59 +391,43 @@ Dashboard{% endblock %} {% block content %}
       return { color: "#FFC107" }; // #FFC107 for all base stations
     }
 
-    // Add ski routes with styled colors
+    // Fetch data and add layers to the map
     fetchData(
       "/ski_routes_geojson/",
       skiRouteStyle,
       function (feature) {
         return `<b>${feature.properties.name}</b><br>Difficulty: ${feature.properties.difficulty}`;
       },
-      function (layer) {
-        skiRoutesLayer = layer;
-        map.addLayer(skiRoutesLayer);
-      }
+      "skiRoutesLayer"
     );
 
-    // Add ski lifts with dark green color
     fetchData(
       "/ski_lifts_geojson/",
       skiLiftStyle,
       function (feature) {
         return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type} <br>State: ${feature.properties.state ? 'Open' : 'Closed'}`;
       },
-      function (layer) {
-        skiLiftsLayer = layer;
-        map.addLayer(skiLiftsLayer);
-      }
+      "skiLiftsLayer"
     );
 
-    // Add parkings with gray color
     fetchData(
       "/parkings_geojson/",
       null,
       function (feature) {
         return `<b>${feature.properties.name}</b><br>Capacity: ${feature.properties.capacity}`;
       },
-      function (layer) {
-        parkingsLayer = layer;
-        map.addLayer(parkingsLayer);
-      }
+      "parkingsLayer"
     );
 
-    // Add restaurants with brown color
     fetchData(
       "/restaurants_geojson/",
       restaurantStyle,
       function (feature) {
         return `<b>${feature.properties.name}</b><br>Website: <a href="${feature.properties.website}" target="_blank">${feature.properties.website}</a>`;
       },
-      function (layer) {
-        restaurantsLayer = layer;
-        map.addLayer(restaurantsLayer);
-      }
+      "restaurantsLayer"
     );
 
-    // Add bus stations
     fetchData(
       "/bus_stations_geojson/",
       null,
@@ -276,143 +435,97 @@ Dashboard{% endblock %} {% block content %}
         return `<b>${feature.properties.name}</b>
         <button onclick="redirectToTransport('${feature.properties.name}')">See bus</button>`;
       },
-      function (layer) {
-        busStationsLayer = layer;
-        map.addLayer(busStationsLayer);
-      }
+      "busStationsLayer"
     );
 
-    function redirectToTransport(fromStation) {
-        var url = `/transport/?from=${encodeURIComponent(fromStation)}`;
-    window.location.href = url;
-    }
-
-    // Add base stations with #FFC107 color
     fetchData(
       "/base_stations_geojson/",
       baseStationStyle,
-            function (feature) {
+      function (feature) {
         return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type}<br>Schedule: ${feature.properties.schedule}`;
       },
-      function (layer) {
-        baseStationsLayer = layer;
-        map.addLayer(baseStationsLayer);
-      }
+      "baseStationsLayer"
     );
 
+    function redirectToTransport(fromStation) {
+      var url = `/transport/?from=${encodeURIComponent(fromStation)}`;
+      window.location.href = url;
+    }
+
+    // Event listeners for checkboxes
     document
       .getElementById("showRestaurants")
       .addEventListener("change", function () {
-        if (this.checked) {
-          map.addLayer(restaurantsLayer);
-        } else {
-          map.removeLayer(restaurantsLayer);
-        }
+        toggleLayer("restaurantsLayer", this.checked);
       });
 
     document
       .getElementById("showParkings")
       .addEventListener("change", function () {
-        if (this.checked) {
-          map.addLayer(parkingsLayer);
-        } else {
-          map.removeLayer(parkingsLayer);
-        }
+        toggleLayer("parkingsLayer", this.checked);
       });
 
     document
       .getElementById("showSkiRoutes")
       .addEventListener("change", function () {
-        if (this.checked) {
-          map.addLayer(skiRoutesLayer);
-        } else {
-          map.removeLayer(skiRoutesLayer);
-        }
+        toggleLayer("skiRoutesLayer", this.checked);
       });
 
     document
       .getElementById("showBlueSkiRoutes")
       .addEventListener("change", function () {
-        if (this.checked) {
-          skiRoutesLayer.eachLayer(function (layer) {
-            if (layer.feature.properties.difficulty.toLowerCase() === "blue") {
-              map.addLayer(layer);
-            }
-          });
-        } else {
-          skiRoutesLayer.eachLayer(function (layer) {
-            if (layer.feature.properties.difficulty.toLowerCase() === "blue") {
-              map.removeLayer(layer);
-            }
-          });
-        }
+        toggleSubLayer("skiRoutesLayer", "blue", this.checked);
       });
 
     document
       .getElementById("showRedSkiRoutes")
       .addEventListener("change", function () {
-        if (this.checked) {
-          skiRoutesLayer.eachLayer(function (layer) {
-            if (layer.feature.properties.difficulty.toLowerCase() === "red") {
-              map.addLayer(layer);
-            }
-          });
-        } else {
-          skiRoutesLayer.eachLayer(function (layer) {
-            if (layer.feature.properties.difficulty.toLowerCase() === "red") {
-              map.removeLayer(layer);
-            }
-          });
-        }
+        toggleSubLayer("skiRoutesLayer", "red", this.checked);
       });
 
     document
       .getElementById("showBlackSkiRoutes")
       .addEventListener("change", function () {
-        if (this.checked) {
-          skiRoutesLayer.eachLayer(function (layer) {
-            if (layer.feature.properties.difficulty.toLowerCase() === "black") {
-              map.addLayer(layer);
-            }
-          });
-        } else {
-          skiRoutesLayer.eachLayer(function (layer) {
-            if (layer.feature.properties.difficulty.toLowerCase() === "black") {
-              map.removeLayer(layer);
-            }
-          });
-        }
+        toggleSubLayer("skiRoutesLayer", "black", this.checked);
       });
 
     document
       .getElementById("showSkiLifts")
       .addEventListener("change", function () {
-        if (this.checked) {
-          map.addLayer(skiLiftsLayer);
-        } else {
-          map.removeLayer(skiLiftsLayer);
-        }
+        toggleLayer("skiLiftsLayer", this.checked);
       });
 
     document
       .getElementById("showBusStations")
       .addEventListener("change", function () {
-        if (this.checked) {
-          map.addLayer(busStationsLayer);
-        } else {
-          map.removeLayer(busStationsLayer);
-        }
+        toggleLayer("busStationsLayer", this.checked);
       });
 
     document
       .getElementById("showBaseStations")
       .addEventListener("change", function () {
-        if (this.checked) {
-          map.addLayer(baseStationsLayer);
-        } else {
-          map.removeLayer(baseStationsLayer);
+        toggleLayer("baseStationsLayer", this.checked);
+      });
+
+    function toggleLayer(layerName, show) {
+      if (show) {
+        map.addLayer(layers[layerName]);
+      } else {
+        map.removeLayer(layers[layerName]);
+      }
+    }
+
+    function toggleSubLayer(layerName, difficulty, show) {
+      layers[layerName].eachLayer(function (layer) {
+        if (layer.feature.properties.difficulty.toLowerCase() === difficulty) {
+          if (show) {
+            map.addLayer(layer);
+          } else {
+            map.removeLayer(layer);
+          }
         }
       });
+    }
   </script>
   {% endblock %}
 </div>

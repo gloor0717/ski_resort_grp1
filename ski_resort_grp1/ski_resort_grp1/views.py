@@ -8,6 +8,10 @@ from urllib.error import HTTPError
 from .models import SkiRoute, SkiLift, Parking, Restaurant, BusStation, BaseStation
 from itertools import groupby
 from operator import attrgetter
+from django.http import JsonResponse
+from .models import SkiRoute, SkiLift
+from django.contrib.gis.geos import Point, MultiLineString, LineString
+from django.contrib.gis.db.models.functions import Distance
 
 def index(request):
     return render(request, 'ski_resort_grp1/index.html')
@@ -122,3 +126,66 @@ def transport(request):
         'transport_data': transport_data
     }
     return render(request, 'ski_resort_grp1/transport.html', context)
+
+def find_connected_routes_and_lifts(start_geometry, end_geometry):
+    routes = SkiRoute.objects.all()
+    lifts = SkiLift.objects.all()
+
+    path = []
+    visited_routes = set()
+    visited_lifts = set()
+
+    def find_path(current_geometry, target_geometry):
+        nonlocal path
+        while True:
+            nearest_route = routes.filter(geometry__intersects=current_geometry).exclude(id__in=visited_routes).annotate(distance=Distance('geometry', current_geometry)).order_by('distance').first()
+            nearest_lift = lifts.filter(geometry__intersects=current_geometry).exclude(id__in=visited_lifts).annotate(distance=Distance('geometry', current_geometry)).order_by('distance').first()
+
+            if not nearest_route and not nearest_lift:
+                break
+
+            if nearest_route and (not nearest_lift or nearest_route.distance < nearest_lift.distance):
+                segment = nearest_route.geometry
+                visited_routes.add(nearest_route.id)
+            else:
+                segment = nearest_lift.geometry
+                visited_lifts.add(nearest_lift.id)
+
+            path.append(segment)
+            current_geometry = segment
+
+            if current_geometry.intersects(target_geometry):
+                path.append(target_geometry)
+                return True
+
+        return False
+
+    if find_path(start_geometry, end_geometry):
+        return MultiLineString(path, srid=4326)
+    else:
+        return None
+    
+def shortest_path_view(request):
+    try:
+        start_x = float(request.GET.get('start_x'))
+        start_y = float(request.GET.get('start_y'))
+        end_x = float(request.GET.get('end_x'))
+        end_y = float(request.GET.get('end_y'))
+
+        start_point = Point(start_x, start_y, srid=4326)  # Convertir en Point
+        end_point = Point(end_x, end_y, srid=4326)        # Convertir en Point
+
+        start_polygon = BaseStation.objects.filter(geometry__contains=start_point).first() or Restaurant.objects.filter(geometry__contains=start_point).first()
+        end_polygon = BaseStation.objects.filter(geometry__contains=end_point).first() or Restaurant.objects.filter(geometry__contains=end_point).first()
+
+        if not start_polygon or not end_polygon:
+            return JsonResponse({'error': 'Start or end point not within any base station or restaurant'}, status=400)
+
+        path = find_connected_routes_and_lifts(start_polygon.geometry, end_polygon.geometry)
+
+        if path:
+            return JsonResponse({'type': 'Feature', 'geometry': path.geojson, 'properties': {}}, safe=False)
+        else:
+            return JsonResponse({'error': 'No path found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

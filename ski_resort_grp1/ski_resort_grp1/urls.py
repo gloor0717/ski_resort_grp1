@@ -14,6 +14,7 @@ urlpatterns = [
     path('base_stations/', views.base_stations, name='base_stations'),
     path('weather/', views.weather, name='weather'),
     path('transport/', views.transport, name='transport'),
+     path('shortest_path/', views.shortest_path_view, name='shortest_path'),
     path('ski_routes_geojson/', views.ski_routes_geojson, name='ski_routes_geojson'),
     path('ski_lifts_geojson/', views.ski_lifts_geojson, name='ski_lifts_geojson'),
     path('parkings_geojson/', views.parkings_geojson, name='parkings_geojson'),
