@@ -12,6 +12,7 @@ urlpatterns = [
     path('bus_stations/', views.bus_stations, name='bus_stations'),
     path('base_stations/', views.base_stations, name='base_stations'),
     path('weather/', views.weather, name='weather'),
+    path('calculate_route/', views.calculate_route, name='calculate_route'),
     path('ski_routes_geojson/', views.ski_routes_geojson, name='ski_routes_geojson'),
     path('ski_lifts_geojson/', views.ski_lifts_geojson, name='ski_lifts_geojson'),
     path('restaurants_geojson/', views.restaurants_geojson, name='restaurants_geojson'),

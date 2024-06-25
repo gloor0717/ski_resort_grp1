@@ -1,11 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.core.serializers import serialize
 import json
-from urllib.request import urlopen, Request
-from urllib.parse import quote_plus
 from urllib.error import HTTPError
-from .models import SkiRoute, SkiLift, Restaurant, BusStation, BaseStation
+from urllib.parse import quote_plus
+from urllib.request import Request, urlopen
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse, JsonResponse
+from .utils import build_ski_resort_graph, find_route
+from .models import BusStation, Restaurant, SkiRoute, SkiLift, BaseStation
+from django.core.serializers import serialize
+from shapely.geometry import Point
+
 
 def index(request):
     return render(request, 'ski_resort_grp1/index.html')
@@ -80,3 +83,65 @@ def weather(request):
         'weather_data': weather_data
     }
     return render(request, 'ski_resort_grp1/weather.html', context)
+
+def get_first_coordinate(geometry):
+    if geometry.geom_type == 'Point':
+        return geometry
+    elif geometry.geom_type in ['LineString', 'Polygon']:
+        return Point(geometry.coords[0])
+    else:
+        raise ValueError(f"Unsupported geometry type: {geometry.geom_type}")
+
+def calculate_route(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        start_id = data.get('start_id')
+        end_id = data.get('end_id')
+        start_type = data.get('start_type')
+        end_type = data.get('end_type')
+        
+        # Get start object
+        start_object = None
+        if start_type == 'ski_route':
+            start_object = get_object_or_404(SkiRoute, id=start_id)
+        elif start_type == 'ski_lift':
+            start_object = get_object_or_404(SkiLift, id=start_id)
+        elif start_type == 'base_station':
+            start_object = get_object_or_404(BaseStation, id=start_id)
+        
+        # Get end object
+        end_object = None
+        if end_type == 'ski_route':
+            end_object = get_object_or_404(SkiRoute, id=end_id)
+        elif end_type == 'ski_lift':
+            end_object = get_object_or_404(SkiLift, id=end_id)
+        elif end_type == 'base_station':
+            end_object = get_object_or_404(BaseStation, id=end_id)
+
+        if not start_object or not end_object:
+            return JsonResponse({"error": "Invalid start or end object"})
+
+        try:
+            start_point = Point(start_object.geometry.centroid.x, start_object.geometry.centroid.y)
+            end_point = Point(end_object.geometry.centroid.x, end_object.geometry.centroid.y)
+        except Exception as e:
+            return JsonResponse({"error": str(e)})
+
+        graph = build_ski_resort_graph()
+        path = find_route(graph, (start_point.x, start_point.y), (end_point.x, end_point.y))
+
+        if path:
+            return JsonResponse({"path": path})
+        else:
+            return JsonResponse({"error": "No path found"})
+    
+    ski_routes = SkiRoute.objects.all()
+    ski_lifts = SkiLift.objects.all()
+    base_stations = BaseStation.objects.all()
+    
+    context = {
+        'ski_routes': ski_routes,
+        'ski_lifts': ski_lifts,
+        'base_stations': base_stations
+    }
+    return render(request, 'ski_resort_grp1/calculate_route.html', context)
