@@ -1,0 +1,80 @@
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Transport Connections
+- Ski Resort Dashboard{% endblock %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="my-4">Transport Connections</h2>
+      <form method="get" class="mb-4">
+        <div class="form-row">
+          <div class="col">
+            <input
+              type="text"
+              class="form-control"
+              name="from"
+              placeholder="From"
+              value="{{ request.GET.from }}"
+            />
+          </div>
+          <div class="col">
+            <input
+              type="text"
+              class="form-control"
+              name="to"
+              placeholder="To"
+              value="{{ request.GET.to }}"
+            />
+          </div>
+          <div class="col-auto">
+            <button
+              type="button"
+              id="swapButton"
+              class="btn btn-secondary mb-2"
+            >
+              Swap
+            </button>
+          </div>
+          <div class="col">
+            <input
+              type="date"
+              class="form-control"
+              name="date"
+              value="{{ request.GET.date }}"
+            />
+          </div>
+          <div class="col">
+            <input
+              type="time"
+              class="form-control"
+              name="time"
+              value="{{ request.GET.time }}"
+            />
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Search</button>
+          </div>
+        </div>
+      </form>
+      <ul class="list-group">
+        {% for connection in transport_data.connections %}
+        <li class="list-group-item">
+          <strong>Date:</strong> {{ connection.from.departure|slice:"0:10" }}<br />
+          <strong>Departure:</strong>
+          {{connection.from.departure|slice:"11:16"}}<br />
+          <strong>Arrival:</strong> {{ connection.to.arrival|slice:"11:16" }}<br />
+          <strong>Duration:</strong> {{ connection.duration|slice:"3:8" }}<br />
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById("swapButton").addEventListener("click", function () {
+    var fromInput = document.querySelector('input[name="from"]');
+    var toInput = document.querySelector('input[name="to"]');
+    var temp = fromInput.value;
+    fromInput.value = toInput.value;
+    toInput.value = temp;
+  });
+</script>
+{% endblock %}

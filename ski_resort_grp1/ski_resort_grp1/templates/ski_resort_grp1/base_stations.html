@@ -1,14 +1,28 @@
-{% extends 'ski_resort_grp1/base.html' %} {% block title %}Base Stations - Ski
-Resort Dashboard{% endblock %} {% block content %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Base Stations - Ski Resort Dashboard{% endblock %} {% block content %}
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h2 class="my-4">Base Stations</h2>
-      <ul class="list-group">
-        {% for base in base_stations %}
-        <li class="list-group-item">{{ base.name }}</li>
-        {% endfor %}
-      </ul>
+      <h2 class="my-4"><i class="bi bi-house-door"></i>Base Stations</h2>
+
+      <!-- Base Stations Table -->
+      <table class="table table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Schedule</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for base_station in base_stations %}
+          <tr>
+            <td>{{ base_station.name }}</td>
+            <td>{{ base_station.type }}</td>
+            <td>{{ base_station.schedule }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

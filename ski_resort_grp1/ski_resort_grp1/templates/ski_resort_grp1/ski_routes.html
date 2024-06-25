@@ -1,18 +1,54 @@
-{% extends 'ski_resort_grp1/base.html' %}
-
-{% block title %}Ski Routes - Ski Resort Dashboard{% endblock %}
-
-{% block content %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Ski Routes - Ski Resort Dashboard{% endblock %} {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-12">
-    <h2 class="my-4">Ski Routes</h2>
-    <ul class="list-group">
-        {% for route in ski_routes %}
-        <li class="list-group-item">{{ route.name }} - {{ route.difficulty }}</li>
-        {% endfor %}
-    </ul>
+            <h2 class="my-4"><i class="bi bi-signpost-split"></i> Ski Routes</h2>
+
+            <!-- Ski Routes Table -->
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Difficulty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for route in ski_routes %}
+                    <tr>
+                        <td>{{ route.name }}</td>
+                        <td class="difficulty 
+                            {% if route.difficulty|lower == 'blue' %}
+                                blue
+                            {% elif route.difficulty|lower == 'red' %}
+                                red
+                            {% elif route.difficulty|lower == 'black' %}
+                                black
+                            {% else %}
+                                secondary
+                            {% endif %}
+                        ">
+                            {{ route.difficulty|lower }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+<style>
+    .difficulty.blue {
+        color: blue;
+    }
+    .difficulty.red {
+        color: red;
+    }
+    .difficulty.black {
+        color: black;
+    }
+    .difficulty.secondary {
+        color: gray;
+    }
+</style>
 {% endblock %}
