@@ -1,17 +1,43 @@
-{% extends 'ski_resort_grp1/base.html' %} {% block title %}Ski Lifts - Ski
-Resort Dashboard{% endblock %} {% block content %}
+{% extends 'ski_resort_grp1/base.html' %}
+
+{% block title %}Ski Lifts - Ski Resort Dashboard{% endblock %}
+
+{% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h2 class="my-4">Ski Lifts</h2>
-      <ul class="list-group">
-        {% for lift in ski_lifts %}
-        <li class="list-group-item">
-          {{ lift.name }} - {{ lift.type }} - {{lift.state|yesno:"Open,Closed"}}
-        </li>
-        {% endfor %}
-      </ul>
+    <div class="row">
+        <div class="col-12">
+            <h2 class="my-4"><i class="bi bi-snow2"></i> Ski Lifts</h2>
+
+            <!-- Ski Lifts Table -->
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lift in ski_lifts %}
+                    <tr>
+                        <td>{{ lift.name }}</td>
+                        <td>{{ lift.type }}</td>
+                        <td>
+                            {% if lift.state %}
+                                <span class="text-success">
+                                    <i class="bi bi-circle-fill" style="color: green;"></i> Open
+                                </span>
+                            {% else %}
+                                <span class="text-danger">
+                                    <i class="bi bi-circle-fill" style="color: red;"></i> Closed
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}

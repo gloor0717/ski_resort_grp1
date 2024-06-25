@@ -6,12 +6,23 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-    <h2 class="my-4">Bus Stations</h2>
-    <ul class="list-group">
-        {% for station in bus_stations %}
-        <li class="list-group-item">{{ station.name }}</li>
-        {% endfor %}
-    </ul>
+            <h2 class="my-4"><i class="bi bi-bus-front"></i> Bus Stations</h2>
+
+            <!-- Bus Stations Table -->
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for station in bus_stations %}
+                    <tr>
+                        <td>{{ station.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

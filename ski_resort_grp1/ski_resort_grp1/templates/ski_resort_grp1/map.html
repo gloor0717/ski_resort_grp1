@@ -1,217 +1,151 @@
-{% extends 'ski_resort_grp1/base.html' %} {% block title %}Map - Ski Resort Dashboard{% endblock %} {% block content %}
+{% extends 'ski_resort_grp1/base.html' %}
+
+{% block title %}Map - Ski Resort Dashboard{% endblock %}
+
+{% block content %}
 <div class="container my-3">
-  <div class="row">
-    <div class="col">
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          value=""
-          id="showRestaurants"
-          checked
-        />
-        <label class="form-check-label" for="showRestaurants">
-          Show Restaurants
-        </label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input
-          class="form-check input"
-          type="checkbox"
-          value=""
-          id="showParkings"
-          checked
-        />
-        <label class="form-check-label" for="showParkings">
-          Show Parkings
-        </label>
+    <div class="row">
+        <div class="col-12">
+            <h2 class="my-4"><i class="bi bi-map"></i> Map</h2>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showRestaurants" checked />
+                <label class="form-check-label" for="showRestaurants">Show Restaurants</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showParkings" checked />
+                <label class="form-check-label" for="showParkings">Show Parkings</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showSkiRoutes" checked />
+                <label class="form-check-label" for="showSkiRoutes">Show Ski Routes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showBlueSkiRoutes" checked />
+                <label class="form-check-label" for="showBlueSkiRoutes">Show Blue Ski Routes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showRedSkiRoutes" checked />
+                <label class="form-check-label" for="showRedSkiRoutes">Show Red Ski Routes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showBlackSkiRoutes" checked />
+                <label class="form-check-label" for="showBlackSkiRoutes">Show Black Ski Routes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showSkiLifts" checked />
+                <label class="form-check-label" for="showSkiLifts">Show Ski Lifts</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showBusStations" checked />
+                <label class="form-check-label" for="showBusStations">Show Bus Stations</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="" id="showBaseStations" checked />
+                <label class="form-check-label" for="showBaseStations">Show Base Stations</label>
+            </div>
         </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="showSkiRoutes"
-            checked
-          />
-          <label class="form-check-label" for="showSkiRoutes">
-            Show Ski Routes
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="showBlueSkiRoutes"
-            checked
-          />
-          <label class="form-check-label" for="showBlueSkiRoutes">
-            Show Blue Ski Routes
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="showRedSkiRoutes"
-            checked
-          />
-          <label class="form-check-label" for="showRedSkiRoutes">
-            Show Red Ski Routes
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="showBlackSkiRoutes"
-            checked
-          />
-          <label class="form-check-label" for="showBlackSkiRoutes">
-            Show Black Ski Routes
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="showSkiLifts"
-            checked
-          />
-          <label class="form-check-label" for="showSkiLifts">
-            Show Ski Lifts
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="showBusStations"
-            checked
-          />
-          <label class="form-check-label" for="showBusStations">
-            Show Bus Stations
-          </label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="showBaseStations"
-            checked
-          />
-          <label class="form-check-label" for="showBaseStations">
-            Show Base Stations
-          </label>
-        </div>
-      </div>
     </div>
-  </div>
-<div class="container-fluid">
-  <div class="row">
-    <!-- Carte -->
-    <div class="col-md-9">
-      <div id="map" class="w-100" style="height: 70vh;"></div>
-    </div>
-    <!-- Éléments de recherche -->
-    <div class="col-md-3">
-      <div class="row">
-        <div class="col">
-          <label for="startPoint">Start Point:</label>
-          <select id="startPoint" class="form-control"> <option value="">Select Start Point</option> </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label for="endPoint">Start Point:</label>
-          <select id="endPoint" class="form-control"> <option value="">Select End Point</option></select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <button id="calculatePath" class="btn btn-primary mt-3">Calculate Shortest Path</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <p id="serverResponse">Response will appear here</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-  {% endblock %} {% block extra_js %}
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    var map = L.map("map", {
-      center: [46.31415226088029, 7.402238579358967],
-      zoom: 13,
+<div class="container-fluid">
+    <div class="row">
+        <!-- Carte -->
+        <div class="col-md-9">
+            <div id="map" class="w-100" style="height: 70vh;"></div>
+        </div>
+        <!-- Éléments de recherche -->
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col">
+                    <label for="startPoint">Start Point:</label>
+                    <select id="startPoint" class="form-control">
+                        <option value="">Select Start Point</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="endPoint">End Point:</label>
+                    <select id="endPoint" class="form-control">
+                        <option value="">Select End Point</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button id="calculatePath" class="btn btn-primary mt-3">Calculate Shortest Path</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p id="serverResponse">Response will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  var map = L.map("map", {
+    center: [46.31415226088029, 7.402238579358967],
+    zoom: 13,
+    minZoom: 9,
+    maxBounds: [
+      [45.5, 6.5],
+      [47.0, 8.5],
+    ],
+  });
+
+  var osmLayer = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+    }
+  ).addTo(map);
+
+  var openSnowMapLayer = L.tileLayer(
+    "https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png",
+    {
       minZoom: 9,
-      maxBounds: [
-        [45.5, 6.5],
-        [47.0, 8.5],
-      ],
-    });
+      maxZoom: 18,
+      attribution:
+        'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & ODbL, &copy; <a href="https://www.opensnowmap.org/iframes/data.html">www.opensnowmap.org</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    }
+  );
 
-    var busIcon = L.icon({
-      iconUrl: "/static/images/bus_logo.png",
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32],
-    });
+  var baseMaps = {
+    OpenStreetMap: osmLayer,
+    OpenSnowMap: openSnowMapLayer,
+  };
 
-    var osmLayer = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 19,
-      }
-    ).addTo(map);
+  L.control.layers(baseMaps).addTo(map);
 
-    var openSnowMapLayer = L.tileLayer(
-      "https://tiles.opensnowmap.org/pistes/{z}/{x}/{y}.png",
-      {
-        minZoom: 9,
-        maxZoom: 18,
-        attribution:
-          'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & ODbL, &copy; <a href="https://www.opensnowmap.org/iframes/data.html">www.opensnowmap.org</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-      }
-    );
+  var layers = {
+    skiRoutesLayer: null,
+    skiLiftsLayer: null,
+    restaurantsLayer: null,
+    parkingsLayer: null,
+    busStationsLayer: null,
+    baseStationsLayer: null,
+    startMarker: null,
+    endMarker: null,
+    shortestPathLayer: null,
+  };
 
-    var baseMaps = {
-      OpenStreetMap: osmLayer,
-      OpenSnowMap: openSnowMapLayer,
-    };
-
-    L.control.layers(baseMaps).addTo(map);
-
-    var layers = {
-      skiRoutesLayer: null,
-      skiLiftsLayer: null,
-      restaurantsLayer: null,
-      parkingsLayer: null,
-      busStationsLayer: null,
-      baseStationsLayer: null,
-      startMarker: null,
-      endMarker: null,
-      shortestPathLayer: null,
-    };
-
-    function fetchData(url, styleFunction, popupContent, layerName) {
+  function fetchData(url, styleFunction, popupContent, layerName) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);  // Add this line to log the data
       var layer = L.geoJSON(data, {
         style: styleFunction,
         pointToLayer: function (feature, latlng) {
           return L.marker(latlng);
         },
         onEachFeature: function (feature, layer) {
+          console.log(feature.properties);  // Add this line to log each feature's properties
           layer.bindPopup(popupContent(feature));
           layer.on("click", function () {
             handleLayerClick(feature, layer);
@@ -228,304 +162,275 @@
     });
 }
 
+
 function populateDropdowns(data, layerType) {
-  function getCentroid(coords) {
-    let x = 0, y = 0, n = coords.length;
-    for (let i = 0; i < n; i++) {
-      x += coords[i][0];
-      y += coords[i][1];
+    function getCentroid(coords) {
+        let x = 0,
+            y = 0,
+            n = coords.length;
+        for (let i = 0; i < n; i++) {
+            x += coords[i][0];
+            y += coords[i][1];
+        }
+        return [y / n, x / n]; // Returning [latitude, longitude]
     }
-    return [y / n, x / n]; // Returning [latitude, longitude]
-  }
 
-  // Clear existing options first to avoid duplicates
-  if (layerType === "restaurants") {
-    console.log("Clearing and populating dropdowns for restaurants");
-    document.getElementById("startPoint").innerHTML = '<option value="">Select Start Point</option>';
-    document.getElementById("endPoint").innerHTML = '<option value="">Select End Point</option>';
-  }
+    // Clear existing options first to avoid duplicates
+    if (layerType === "restaurants" || layerType === "baseStations") {
+        document.getElementById("startPoint").innerHTML =
+            '<option value="">Select Start Point</option>';
+        document.getElementById("endPoint").innerHTML =
+            '<option value="">Select End Point</option>';
+    }
 
-  data.features.forEach((feature) => {
-    let coords = feature.geometry.type === "Polygon" ? feature.geometry.coordinates[0] : feature.geometry.coordinates;
-    let centroid = getCentroid(coords);
-    let lat = centroid[0];
-    let lng = centroid[1];
-    let optionText = feature.properties.name;
+    data.features.forEach((feature) => {
+        let coords =
+            feature.geometry.type === "Polygon"
+                ? feature.geometry.coordinates[0]
+                : feature.geometry.coordinates;
+        let centroid = getCentroid(coords);
+        let lat = centroid[0];
+        let lng = centroid[1];
+        let optionText = feature.properties.name;
 
-    // Create new option element for start point dropdown
-    var startOption = document.createElement("option");
-    startOption.value = lat + "," + lng; // Correct format
-    startOption.textContent = optionText;
-    document.getElementById("startPoint").appendChild(startOption);
+        // Create new option element for start point dropdown
+        var startOption = document.createElement("option");
+        startOption.value = lat + "," + lng; // Correct format
+        startOption.textContent = optionText;
+        document.getElementById("startPoint").appendChild(startOption);
 
-    // Create a similar option for the end point dropdown
-    var endOption = document.createElement("option");
-    endOption.value = lat + "," + lng; // Correct format
-    endOption.textContent = optionText;
-    document.getElementById("endPoint").appendChild(endOption);
-  });
+        // Create a similar option for the end point dropdown
+        var endOption = document.createElement("option");
+        endOption.value = lat + "," + lng; // Correct format
+        endOption.textContent = optionText;
+        document.getElementById("endPoint").appendChild(endOption);
+    });
 }
 
-document.getElementById("calculatePath").addEventListener("click", function () {
-  var startValue = document.getElementById("startPoint").value;
-  var endValue = document.getElementById("endPoint").value;
+  document
+    .getElementById("calculatePath")
+    .addEventListener("click", function () {
+      var startValue = document.getElementById("startPoint").value;
+      var endValue = document.getElementById("endPoint").value;
 
-  console.log("Start Value: ", startValue);
-  console.log("End Value: ", endValue);
+      if (startValue && endValue) {
+        var startCoords = startValue.split(",");
+        var endCoords = endValue.split(",");
 
-  if (startValue && endValue) {
-    var startCoords = startValue.split(",");
-    var endCoords = endValue.split(",");
-
-    console.log("Start Coords: ", startCoords);
-    console.log("End Coords: ", endCoords);
-
-    if (startCoords.length === 2 && endCoords.length === 2) {
-      var startLat = startCoords[0];
-      var startLng = startCoords[1];
-      var endLat = endCoords[0];
-      var endLng = endCoords[1];
-
-      fetch(`/shortest_path/?start_x=${startLng}&start_y=${startLat}&end_x=${endLng}&end_y=${endLat}`)
-        .then(response => response.json())
-        .then(data => {
-          console.log("Server Response: ", data); // Logging the server response
-          if (data.error) {
-            document.getElementById('serverResponse').innerText = 'Error: ' + data.error;
-          } else {
-            displayPath(data);
-            document.getElementById('serverResponse').innerText = 'Path successfully displayed on the map.';
-          }
-        })
-        .catch(error => {
-          document.getElementById('serverResponse').innerText = 'Error: ' + error.message;
-        });
-    } else {
-      alert("Please select both start and end points.");
-      document.getElementById('serverResponse').innerText = 'Error: Please select both start and end points.';
-    }
-  } else {
-    alert("Please select both start and end points.");
-    document.getElementById('serverResponse').innerText = 'Error: Please select both start and end points.';
-  }
-});
-
-    function displayPath(pathData) {
-      if (layers.shortestPathLayer) {
-        map.removeLayer(layers.shortestPathLayer);
-      }
-      layers.shortestPathLayer = L.geoJSON(pathData, {
-        style: { color: "green", weight: 5 }
-      }).addTo(map);
-    }
-
-    document.getElementById("calculatePath").addEventListener("click", function () {
-      var startSelect = document.getElementById("startPoint");
-      var endSelect = document.getElementById("endPoint");
-      var startIndex = startSelect.selectedIndex;
-      var endIndex = endSelect.selectedIndex;
-
-      // Ensure valid indices and prevent "Select..." options
-      if (startIndex > 0 && endIndex > 0) {
-        var startCoords = startSelect.value.split(",");
-        var endCoords = endSelect.value.split(",");
-
-        // Check if coordinates arrays are valid
         if (startCoords.length === 2 && endCoords.length === 2) {
           var startLat = startCoords[0];
           var startLng = startCoords[1];
           var endLat = endCoords[0];
           var endLng = endCoords[1];
 
-          // Fetch request to the server for the shortest path
-          fetch(`/shortest_path/?start_x=${startLng}&start_y=${startLat}&end_x=${endLng}&end_y=${endLat}`)
-            .then(response => response.json())
-            .then(data => {
-              console.log("Server Response: ", data); // Logging the server response
+          fetch(
+            `/shortest_path/?start_x=${startLng}&start_y=${startLat}&end_x=${endLng}&end_y=${endLat}`
+          )
+            .then((response) => response.json())
+            .then((data) => {
               if (data.error) {
-                document.getElementById('serverResponse').innerText = 'Error: ' + data.error;
+                document.getElementById("serverResponse").innerText =
+                  "Error: " + data.error;
               } else {
                 displayPath(data);
-                document.getElementById('serverResponse').innerText = 'Path successfully displayed on the map.';
+                document.getElementById("serverResponse").innerText =
+                  "Path successfully displayed on the map.";
               }
             })
-            .catch(error => {
-              document.getElementById('serverResponse').innerText = 'Error: ' + error.message;
+            .catch((error) => {
+              document.getElementById("serverResponse").innerText =
+                "Error: " + error.message;
             });
         } else {
-          alert("Please select valid start and end points.");
-          document.getElementById('serverResponse').innerText = 'Error: Please select valid start and end points.';
+          alert("Please select both start and end points.");
+          document.getElementById("serverResponse").innerText =
+            "Error: Please select both start and end points.";
         }
       } else {
         alert("Please select both start and end points.");
-        document.getElementById('serverResponse').innerText = 'Error: Please select both start and end points.';
+        document.getElementById("serverResponse").innerText =
+          "Error: Please select both start and end points.";
       }
     });
 
-    function skiRouteStyle(feature) {
-      switch (feature.properties.difficulty.toLowerCase()) {
-        case "blue":
-          return { color: "blue" };
-        case "red":
-          return { color: "red" };
-        case "black":
-          return { color: "black" };
-        default:
-          return { color: "gray" };
-      }
+  function displayPath(pathData) {
+    if (layers.shortestPathLayer) {
+      map.removeLayer(layers.shortestPathLayer);
     }
+    layers.shortestPathLayer = L.geoJSON(pathData, {
+      style: { color: "green", weight: 5 },
+    }).addTo(map);
+  }
 
-    function skiLiftStyle(feature) {
-      if (feature.properties.state === false) {
-        return { color: "#FFA500" }; // Orange if state is False
-      } else {
-        return { color: "#006400" }; // DarkGreen for all other cases
-      }
+  function skiRouteStyle(feature) {
+    switch (feature.properties.difficulty.toLowerCase()) {
+      case "blue":
+        return { color: "blue" };
+      case "red":
+        return { color: "red" };
+      case "black":
+        return { color: "black" };
+      default:
+        return { color: "gray" };
     }
+  }
 
-    function restaurantStyle(feature) {
-      return { color: "brown" }; // Brown for all restaurants
+  function skiLiftStyle(feature) {
+    if (feature.properties.state === false) {
+      return { color: "#FFA500" }; // Orange if state is False
+    } else {
+      return { color: "#006400" }; // DarkGreen for all other cases
     }
+  }
 
-    function baseStationStyle(feature) {
-      return { color: "#FFC107" }; // #FFC107 for all base stations
-    }
+  function restaurantStyle(feature) {
+    return { color: "brown" }; // Brown for all restaurants
+  }
 
-    // Fetch data and add layers to the map
-    fetchData(
-      "/ski_routes_geojson/",
-      skiRouteStyle,
-      function (feature) {
+  function baseStationStyle(feature) {
+    return { color: "#FFC107" }; // #FFC107 for all base stations
+  }
+
+// Fetch data and add layers to the map
+fetchData(
+    "/ski_routes_geojson/",
+    skiRouteStyle,
+    function (feature) {
         return `<b>${feature.properties.name}</b><br>Difficulty: ${feature.properties.difficulty}`;
-      },
-      "skiRoutesLayer"
-    );
+    },
+    "skiRoutesLayer"
+);
 
-    fetchData(
-      "/ski_lifts_geojson/",
-      skiLiftStyle,
-      function (feature) {
-        return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type} <br>State: ${feature.properties.state ? 'Open' : 'Closed'}`;
-      },
-      "skiLiftsLayer"
-    );
+fetchData(
+    "/ski_lifts_geojson/",
+    skiLiftStyle,
+    function (feature) {
+        return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type} <br>State: ${
+            feature.properties.state ? "Open" : "Closed"
+        }`;
+    },
+    "skiLiftsLayer"
+);
 
-    fetchData(
-      "/parkings_geojson/",
-      null,
-      function (feature) {
+fetchData(
+    "/parkings_geojson/",
+    null,
+    function (feature) {
         return `<b>${feature.properties.name}</b><br>Capacity: ${feature.properties.capacity}`;
-      },
-      "parkingsLayer"
-    );
+    },
+    "parkingsLayer"
+);
 
-    fetchData(
-      "/restaurants_geojson/",
-      restaurantStyle,
-      function (feature) {
-        return `<b>${feature.properties.name}</b><br>Website: <a href="${feature.properties.website}" target="_blank">${feature.properties.website}</a>`;
-      },
-      "restaurantsLayer"
-    );
+fetchData(
+    "/restaurants_geojson/",
+    restaurantStyle,
+    function (feature) {
+        return `<b>${feature.properties.name}</b><br>Website: <a href="${
+            feature.properties.website
+        }" target="_blank">${feature.properties.website}</a>`;
+    },
+    "restaurantsLayer"
+);
 
-    fetchData(
-      "/bus_stations_geojson/",
-      null,
-      function (feature) {
+fetchData(
+    "/bus_stations_geojson/",
+    null,
+    function (feature) {
         return `<b>${feature.properties.name}</b>
-        <button onclick="redirectToTransport('${feature.properties.name}')">See bus</button>`;
-      },
-      "busStationsLayer"
-    );
+            <button onclick="redirectToTransport('${
+                feature.properties.name
+            }')">See bus</button>`;
+    },
+    "busStationsLayer"
+);
 
-    fetchData(
-      "/base_stations_geojson/",
-      baseStationStyle,
-      function (feature) {
+fetchData(
+    "/base_stations_geojson/",
+    baseStationStyle,
+    function (feature) {
         return `<b>${feature.properties.name}</b><br>Type: ${feature.properties.type}<br>Schedule: ${feature.properties.schedule}`;
-      },
-      "baseStationsLayer"
-    );
+    },
+    "baseStationsLayer"
+);
 
-    function redirectToTransport(fromStation) {
-      var url = `/transport/?from=${encodeURIComponent(fromStation)}`;
-      window.location.href = url;
+  function redirectToTransport(fromStation) {
+    var url = `/transport/?from=${encodeURIComponent(fromStation)}`;
+    window.location.href = url;
+}
+
+  // Event listeners for checkboxes
+  document
+    .getElementById("showRestaurants")
+    .addEventListener("change", function () {
+      toggleLayer("restaurantsLayer", this.checked);
+    });
+
+  document
+    .getElementById("showParkings")
+    .addEventListener("change", function () {
+      toggleLayer("parkingsLayer", this.checked);
+    });
+
+  document
+    .getElementById("showSkiRoutes")
+    .addEventListener("change", function () {
+      toggleLayer("skiRoutesLayer", this.checked);
+    });
+
+  document
+    .getElementById("showBlueSkiRoutes")
+    .addEventListener("change", function () {
+      toggleSubLayer("skiRoutesLayer", "blue", this.checked);
+    });
+
+  document
+    .getElementById("showRedSkiRoutes")
+    .addEventListener("change", function () {
+      toggleSubLayer("skiRoutesLayer", "red", this.checked);
+    });
+
+  document
+    .getElementById("showBlackSkiRoutes")
+    .addEventListener("change", function () {
+      toggleSubLayer("skiRoutesLayer", "black", this.checked);
+    });
+
+  document
+    .getElementById("showSkiLifts")
+    .addEventListener("change", function () {
+      toggleLayer("skiLiftsLayer", this.checked);
+    });
+
+  document
+    .getElementById("showBusStations")
+    .addEventListener("change", function () {
+      toggleLayer("busStationsLayer", this.checked);
+    });
+
+  document
+    .getElementById("showBaseStations")
+    .addEventListener("change", function () {
+      toggleLayer("baseStationsLayer", this.checked);
+    });
+
+  function toggleLayer(layerName, show) {
+    if (show) {
+      map.addLayer(layers[layerName]);
+    } else {
+      map.removeLayer(layers[layerName]);
     }
+  }
 
-    // Event listeners for checkboxes
-    document
-      .getElementById("showRestaurants")
-      .addEventListener("change", function () {
-        toggleLayer("restaurantsLayer", this.checked);
-      });
-
-    document
-      .getElementById("showParkings")
-      .addEventListener("change", function () {
-        toggleLayer("parkingsLayer", this.checked);
-      });
-
-    document
-      .getElementById("showSkiRoutes")
-      .addEventListener("change", function () {
-        toggleLayer("skiRoutesLayer", this.checked);
-      });
-
-    document
-      .getElementById("showBlueSkiRoutes")
-      .addEventListener("change", function () {
-        toggleSubLayer("skiRoutesLayer", "blue", this.checked);
-      });
-
-    document
-      .getElementById("showRedSkiRoutes")
-      .addEventListener("change", function () {
-        toggleSubLayer("skiRoutesLayer", "red", this.checked);
-      });
-
-    document
-      .getElementById("showBlackSkiRoutes")
-      .addEventListener("change", function () {
-        toggleSubLayer("skiRoutesLayer", "black", this.checked);
-      });
-
-    document
-      .getElementById("showSkiLifts")
-      .addEventListener("change", function () {
-        toggleLayer("skiLiftsLayer", this.checked);
-      });
-
-    document
-      .getElementById("showBusStations")
-      .addEventListener("change", function () {
-        toggleLayer("busStationsLayer", this.checked);
-      });
-
-    document
-      .getElementById("showBaseStations")
-      .addEventListener("change", function () {
-        toggleLayer("baseStationsLayer", this.checked);
-      });
-
-    function toggleLayer(layerName, show) {
-      if (show) {
-        map.addLayer(layers[layerName]);
-      } else {
-        map.removeLayer(layers[layerName]);
-      }
-    }
-
-    function toggleSubLayer(layerName, difficulty, show) {
-      layers[layerName].eachLayer(function (layer) {
-        if (layer.feature.properties.difficulty.toLowerCase() === difficulty) {
-          if (show) {
-            map.addLayer(layer);
-          } else {
-            map.removeLayer(layer);
-          }
+  function toggleSubLayer(layerName, difficulty, show) {
+    layers[layerName].eachLayer(function (layer) {
+      if (layer.feature.properties.difficulty.toLowerCase() === difficulty) {
+        if (show) {
+          map.addLayer(layer);
+        } else {
+          map.removeLayer(layer);
         }
-      });
-    }
-  </script>
-  {% endblock %}
-</div>
+      }
+    });
+  }
+</script>
+{% endblock %}

@@ -6,12 +6,25 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-    <h2 class="my-4">Restaurants</h2>
-    <ul class="list-group">
-        {% for restaurant in restaurants %}
-        <li class="list-group-item">{{ restaurant.name }} - <a href="{{ restaurant.website }}" target="_blank">Website</a></li>
-        {% endfor %}
-    </ul>
+            <h2 class="my-4"><i class="bi bi-shop-window"></i> Restaurants</h2>
+
+            <!-- Restaurants Table -->
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Website</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for restaurant in restaurants %}
+                    <tr>
+                        <td>{{ restaurant.name }}</td>
+                        <td><a href="{{ restaurant.website }}" target="_blank">{{ restaurant.website }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

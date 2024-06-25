@@ -1,17 +1,27 @@
-{% extends 'ski_resort_grp1/base.html' %} {% block title %}Parkings - Ski Resort
-Dashboard{% endblock %} {% block content %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Parkings - Ski Resort Dashboard{% endblock %} {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h2 class="my-4">Parkings</h2>
-      <ul class="list-group">
-        {% for parking in parkings %}
-        <li class="list-group-item">
-          {{ parking.name }} {{ parking.capacity}}
-        </li>
-        {% endfor %}
-      </ul>
+    <div class="row">
+        <div class="col-12">
+            <h2 class="my-4"><i class="bi bi-p-circle"></i> Parkings</h2>
+
+            <!-- Parkings Table -->
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Capacity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for parking in parkings %}
+                    <tr>
+                        <td>{{ parking.name }}</td>
+                        <td>{{ parking.capacity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}
