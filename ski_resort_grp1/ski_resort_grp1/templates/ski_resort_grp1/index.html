@@ -6,8 +6,93 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h2 class="my-4">Welcome to the Anzère Ski Resort</h2>
+            <h2 class="my-4"><i class="bi bi-house-door"></i> Welcome to the Anzère Ski Resort</h2>
             <p>This is the homepage of the Anzère Ski Resort Dashboard. Use the sidebar to navigate through various features such as Ski Routes, Ski Lifts, Restaurants, Bus Stations, and Weather.</p>
+        </div>
+    </div>
+    
+    <!-- Ski Lifts Status -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="my-4"><i class="bi bi-snow2"></i> Current Ski Lifts Status</h3>
+            <ul class="list-group">
+                {% for lift in ski_lifts %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ lift.name }} - {{ lift.type }}
+                    {% if lift.state %}
+                    <span class="badge badge-success"><i class="bi bi-check-circle-fill"></i> Open</span>
+                    {% else %}
+                    <span class="badge badge-danger"><i class="bi bi-x-circle-fill"></i> Closed</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Next Bus Stops -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="my-4"><i class="bi bi-bus-front"></i> Next Bus Stops</h3>
+            <ul class="list-group">
+                {% for station in bus_stations %}
+                <li class="list-group-item">{{ station.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Current Weather -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="my-4"><i class="bi bi-cloud-sun"></i> Current Weather</h3>
+            {% if weather_data %}
+            <p><strong>{{ weather_data.current.condition.text }}</strong></p>
+            <p>Temperature: {{ weather_data.current.temp_c }}°C</p>
+            <p>Humidity: {{ weather_data.current.humidity }}%</p>
+            <p>Wind Speed: {{ weather_data.current.wind_kph }} kph</p>
+            {% else %}
+            <p>Unable to fetch weather data at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sample Ski Routes -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="my-4"><i class="bi bi-signpost-split"></i> Sample Ski Routes</h3>
+            <ul class="list-group">
+                {% for route in ski_routes %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ route.name }}
+                    <span class="badge badge-pill 
+                        {% if route.difficulty|lower == 'blue' %}
+                            badge-primary
+                        {% elif route.difficulty|lower == 'red' %}
+                            badge-danger
+                        {% elif route.difficulty|lower == 'black' %}
+                            badge-dark
+                        {% else %}
+                            badge-secondary
+                        {% endif %}
+                    ">
+                        {{ route.difficulty|lower }}
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Sample Restaurants -->
+    <div class="row">
+        <div class="col-12">
+            <h3 class="my-4"><i class="bi bi-shop-window"></i> Sample Restaurants</h3>
+            <ul class="list-group">
+                {% for restaurant in restaurants %}
+                <li class="list-group-item">{{ restaurant.name }} - <a href="{{ restaurant.website }}" target="_blank">Website</a></li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

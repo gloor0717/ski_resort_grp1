@@ -1,24 +1,22 @@
-{% extends 'ski_resort_grp1/base.html' %}
-
-{% block title %}Bus Stations - Ski Resort Dashboard{% endblock %}
-
-{% block content %}
+{% extends 'ski_resort_grp1/base.html' %} {% block title %}Parkings - Ski Resort Dashboard{% endblock %} {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h2 class="my-4"><i class="bi bi-bus-front"></i> Bus Stations</h2>
+            <h2 class="my-4"><i class="bi bi-p-circle"></i> Parkings</h2>
 
-            <!-- Bus Stations Table -->
+            <!-- Parkings Table -->
             <table class="table table-bordered">
                 <thead class="thead-light">
                     <tr>
                         <th>Name</th>
+                        <th>Capacity</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for station in bus_stations %}
+                    {% for parking in parkings %}
                     <tr>
-                        <td>{{ station.name }}</td>
+                        <td>{{ parking.name }}</td>
+                        <td>{{ parking.capacity }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
